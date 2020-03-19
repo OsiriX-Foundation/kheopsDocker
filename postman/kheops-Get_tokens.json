@@ -213,6 +213,58 @@
         "url": "{{token_endpoint}}"
       },
       "response": []
+    },
+    {
+      "name": "register titi",
+      "_postman_id": "8bb2e0ea-8986-4e04-9837-f3980d4bf1e6",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "access_token",
+              "value": "{{user1_token}}",
+              "type": "text"
+            }
+          ],
+          "options": {
+            "urlencoded": {}
+          }
+        },
+        "url": "{{URL}}/register"
+      },
+      "response": []
+    },
+    {
+      "name": "register titi Copy",
+      "_postman_id": "9219732b-c767-4a83-8c94-11e59caa6b62",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "access_token",
+              "value": "{{user1_token}}",
+              "type": "text"
+            }
+          ],
+          "options": {
+            "urlencoded": {}
+          }
+        },
+        "url": "{{URL}}/register"
+      },
+      "response": []
     }
   ]
 }
