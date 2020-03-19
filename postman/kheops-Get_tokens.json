@@ -265,6 +265,32 @@
         "url": "{{URL}}/register"
       },
       "response": []
+    },
+    {
+      "name": "register titi Copy Copy",
+      "_postman_id": "4d2bc9f9-2bc9-479f-b889-b138c1170d89",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "access_token",
+              "value": "{{user1_token}}",
+              "type": "text"
+            }
+          ],
+          "options": {
+            "urlencoded": {}
+          }
+        },
+        "url": "{{URL}}/register"
+      },
+      "response": []
     }
   ]
 }
