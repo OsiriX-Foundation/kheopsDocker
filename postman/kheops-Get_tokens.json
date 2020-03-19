@@ -216,18 +216,6 @@
     },
     {
       "name": "register titi",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "866bf225-366a-432a-a7d6-62c91a16a27d",
-            "exec": [
-              "tests[\"Status code is 200\"] = responseCode.code === 200;"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
       "_postman_id": "8bb2e0ea-8986-4e04-9837-f3980d4bf1e6",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
@@ -254,18 +242,6 @@
     },
     {
       "name": "register toto",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "01ef1e50-3636-4c69-b06d-6977deb4c3e8",
-            "exec": [
-              "tests[\"Status code is 200\"] = responseCode.code === 200;"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
       "_postman_id": "9219732b-c767-4a83-8c94-11e59caa6b62",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
