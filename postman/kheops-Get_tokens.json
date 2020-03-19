@@ -254,8 +254,8 @@
           "urlencoded": [
             {
               "key": "access_token",
-              "value": "{{user1_token}}",
-              "type": "text"
+              "type": "text",
+              "value": "{{user2_token}}"
             }
           ],
           "options": {
