@@ -280,7 +280,7 @@
           "urlencoded": [
             {
               "key": "access_token",
-              "value": "{{user1_token}}",
+              "value": "{{user3_token}}",
               "type": "text"
             }
           ],
