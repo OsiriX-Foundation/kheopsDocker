@@ -6,8 +6,6 @@ services:
     image: dcm4che/slapd-dcm4chee:${PACS_LDAP_IMAGE_TAG}
     env_file: docker-compose.env
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
       - dcm4chee-ldap-ldap:/var/lib/ldap
       - dcm4chee-ldap-slapdd:/etc/ldap/slapd.d
     restart: on-failure
@@ -21,14 +19,13 @@ services:
     environment:
       WILDFLY_CHOWN: /storage /opt/wildfly/standalone
       WILDFLY_WAIT_FOR: ldap:389
-      JAVA_OPTS: -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n
+      WILDFLY_PACSDS_MAX_POOL_SIZE: 10
+      JAVA_OPTS: -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
     secrets:
       - kheops_pacsdb_pass
     depends_on:
       - ldap
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
       - /medirad14_archive:/opt/wildfly/standalone
       - /medirad14_archive:/storage
     restart: on-failure
@@ -39,9 +36,6 @@ services:
   kheops-authorization:
     container_name: kheopsauthorization
     image: osirixfoundation/kheops-authorization:${KHEOPS_AUTHORIZATION_IMAGE_TAG}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
     restart: on-failure
     env_file: docker-compose.env
     environment:
@@ -65,9 +59,6 @@ services:
   kheops-zipper:
     container_name: kheopszipper
     image: osirixfoundation/kheops-zipper:${KHEOPS_ZIPPER_IMAGE_TAG}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
     restart: on-failure
     env_file: docker-compose.env
     depends_on:
@@ -81,9 +72,6 @@ services:
   kheops-ui:
     container_name: kheopsui
     image: osirixfoundation/kheops-ui:${KHEOPS_UI_IMAGE_TAG}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
     env_file: docker-compose.env
     restart: on-failure
     depends_on:
@@ -96,9 +84,6 @@ services:
   kheops-dicomweb-proxy:
     container_name: kheopsdicomwebproxy
     image: osirixfoundation/kheops-dicomweb-proxy:${KHEOPS_DICOMWEB_PROXY_IMAGE_TAG}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
     restart: on-failure
     env_file: docker-compose.env
     environment:
@@ -122,9 +107,6 @@ services:
       - privkey1.pem
       - fullchain1.pem
     env_file: docker-compose.env
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
     depends_on:
       - kheops-authorization
       - kheops-dicomweb-proxy
@@ -145,9 +127,6 @@ services:
     container_name: pacsauthorizationproxy
     env_file: docker-compose.env
     image: osirixfoundation/pacs-authorization-proxy:${PACS_AUTHORIZATION_PROXY_IMAGE_TAG}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
     depends_on:
       - arc
     secrets:
