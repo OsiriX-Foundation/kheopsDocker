@@ -35,7 +35,6 @@
           - keycloak-standalone:/opt/keycloak/standalone
           - ./themes/kheops:/opt/jboss/keycloak/themes/kheops:ro
           - ./themes/medirad:/opt/jboss/keycloak/themes/medirad:ro
-          - ./themes/medirad:/opt/jboss/keycloak/themes/medirad_v2:ro
         logging:
           driver: json-file
           options:
