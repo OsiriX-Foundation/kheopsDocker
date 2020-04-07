@@ -2,7 +2,7 @@
     version: "3.1"
     services:
       postgres:
-        image: osirixfoundation/kheops-keycloak-psql:${KHEOPS_KEYCLOAK_PSQL}
+        image: postgres:${POSTGRES_TAG}
         container_name: keycloak-psql
         env_file: docker-compose.env
         volumes:
