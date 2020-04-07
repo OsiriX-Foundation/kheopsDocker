@@ -11,7 +11,7 @@
           - psql_password
     
       nginx:
-        image: jboss/keycloak:${KEYCLOAK_TAG}
+        image: osirixfoundation/kheops-keycloak-nginx:${KHEOPS_KEYCLOAK_NGINX}
         container_name: keycloak-nginx
         ports:
           - "80:80"
@@ -26,7 +26,7 @@
           - lavim_fullchain1.pem
     
       keycloak:
-        image: osirixfoundation/kheops-keycloak:${KHEOPS_KEYCLOAK}
+        image: jboss/keycloak:${KEYCLOAK_TAG}
         container_name: keycloak
         env_file: docker-compose.env
         depends_on:
