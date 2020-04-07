@@ -9,7 +9,8 @@
           - postgres_data:/var/lib/postgresql/data
         secrets:
           - psql_password
-    
+        restart: unless-stopped
+
       nginx:
         image: osirixfoundation/kheops-keycloak-nginx:${KHEOPS_KEYCLOAK_NGINX}
         container_name: keycloak-nginx
@@ -24,6 +25,7 @@
           - fullchain1.pem
           - lavim_privkey1.pem
           - lavim_fullchain1.pem
+        restart: unless-stopped
     
       keycloak:
         image: jboss/keycloak:${KEYCLOAK_TAG}
@@ -45,7 +47,8 @@
           - "smtp.unige.ch:10.194.9.232"
         secrets:
           - psql_password
-    
+        restart: unless-stopped
+
     secrets:
       psql_password:
         file: secrets/psql_password
