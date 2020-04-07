@@ -11,7 +11,7 @@
           - psql_password
     
       nginx:
-        image: osirixfoundation/kheops-keycloak-nginx:${KHEOPS_KEYCLOAK_NGINX}
+        image: jboss/keycloak:${KEYCLOAK_TAG}
         container_name: keycloak-nginx
         ports:
           - "80:80"
@@ -33,6 +33,8 @@
           - postgres
         volumes:
           - keycloak-standalone:/opt/keycloak/standalone
+          - ./themes/kheops:/opt/jboss/keycloak/themes/kheops:ro
+          - ./themes/medirad:/opt/jboss/keycloak/themes/medirad:ro
         logging:
           driver: json-file
           options:
