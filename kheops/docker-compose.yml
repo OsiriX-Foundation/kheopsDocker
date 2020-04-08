@@ -76,13 +76,10 @@ services:
       - kheops-authorization-database
       - arc
     secrets:
-      - kheops_superuser_hmasecret
       - kheops_auth_hmasecret
       - kheops_authdb_pass
-      - kheops_keycloak_clientsecret
       - kheops_client_dicomwebproxysecret
       - kheops_client_zippersecret
-      - kheops_metric_ressource_password
     extra_hosts:
       - "keycloak.kheops.online:10.5.5.29"
       - "reportprovider.kheops.online:10.5.5.33"
@@ -175,8 +172,6 @@ secrets:
     file: ${SECRETS_PATH}/kheops_authdb_pass
   kheops_pacsdb_pass:
     file: ${SECRETS_PATH}/kheops_pacsdb_pass
-  kheops_superuser_hmasecret:
-    file: ${SECRETS_PATH}/kheops_superuser_hmasecret
   kheops_auth_hmasecret:
     file: ${SECRETS_PATH}/kheops_auth_hmasecret
   kheops_auth_hmasecret_post:
@@ -185,16 +180,12 @@ secrets:
     file: ${NGINX_KEY}/privkey1.pem
   fullchain1.pem:
     file: ${NGINX_KEY}/fullchain1.pem
-  kheops_keycloak_clientsecret:
-    file: ${SECRETS_PATH}/kheops_keycloak_clientsecret
   kheops_client_dicomwebproxysecret:
     file: ${SECRETS_PATH}/kheops_client_dicomwebproxysecret
   kheops_client_zippersecret:
     file: ${SECRETS_PATH}/kheops_client_zippersecret
   welcomebot_token:
     file: ${SECRETS_PATH}/welcomebot_token
-  kheops_metric_ressource_password:
-    file: ${SECRETS_PATH}/kheops_metric_ressource_password
 
 volumes:
   dcm4chee-ldap-ldap:
@@ -209,7 +200,20 @@ volumes:
 networks:
   kheops_network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.241.0/24"
   pacs_network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.242.0/24"
   frontend_network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.243.0/24"
+
