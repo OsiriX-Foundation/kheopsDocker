@@ -80,7 +80,6 @@ services:
     secrets:
       - kheops_auth_hmasecret
       - kheops_authdb_pass
-      - kheops_keycloak_clientsecret
       - kheops_client_dicomwebproxysecret
       - kheops_client_zippersecret
     extra_hosts:
@@ -191,8 +190,6 @@ secrets:
     file: ${NGINX_KEY}/privkey1.pem
   fullchain1.pem:
     file: ${NGINX_KEY}/fullchain1.pem
-  kheops_keycloak_clientsecret:
-    file: ${SECRETS_PATH}/kheops_keycloak_clientsecret
   kheops_client_dicomwebproxysecret:
     file: ${SECRETS_PATH}/kheops_client_dicomwebproxysecret
   kheops_client_zippersecret:
