@@ -210,7 +210,19 @@ volumes:
 networks:
   kheops_network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.241.0/24"
   pacs_network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.242.0/24"
   frontend_network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.243.0/24"
