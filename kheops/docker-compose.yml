@@ -129,6 +129,7 @@ services:
     image: osirixfoundation/kheops-reverse-proxy:${KHEOPS_REVERSE_PROXY_IMAGE_TAG}
     volumes:
       - logs_proxy:/usr/local/tomcat/logs
+      - letsencrypt:/etc/letsencrypt
     secrets:
       - privkey1.pem
       - fullchain1.pem
@@ -209,6 +210,7 @@ volumes:
   kheops-db-data:
   logs_auth:
   logs_proxy:
+  letsencrypt:
   
 networks:
   kheops_network:
