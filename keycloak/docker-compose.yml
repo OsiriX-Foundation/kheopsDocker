@@ -22,11 +22,6 @@
         depends_on:
           - postgres
           - keycloak
-        secrets:
-          - privkey1.pem
-          - fullchain1.pem
-          - lavim_privkey1.pem
-          - lavim_fullchain1.pem
         restart: unless-stopped
     
       keycloak:
@@ -54,14 +49,6 @@
     secrets:
       psql_password:
         file: secrets/psql_password
-      privkey1.pem:
-        file: secrets/privkey1.pem
-      fullchain1.pem:
-        file: secrets/fullchain1.pem
-      lavim_privkey1.pem:
-        file: secrets/lavim_privkey1.pem
-      lavim_fullchain1.pem:
-        file: secrets/lavim_fullchain1.pem
     
     volumes:
       keycloak-standalone:
