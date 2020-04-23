@@ -7601,7 +7601,7 @@
                   "",
                   "tests[\"event_type\"] = jsonObject[0].event_type ==  \"Mutation\"",
                   "",
-                  "tests[\"origin_name\"] = jsonObject[0].origin.email == pm.variables.get(\"user1_mail\");",
+                  "tests[\"origin_name\"] = jsonObject[0].source.email == pm.variables.get(\"user1_mail\");",
                   "",
                   "tests[\"target_name\"] = jsonObject[0].target.email == pm.variables.get(\"user2_mail\");",
                   "",
