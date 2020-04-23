@@ -164,4 +164,4 @@ volumes:
   dcm4chee-db-data:
   dcm4chee-arc-wildfly:
   kheops-db-data:
-    letsencrypt:
+  letsencrypt:
