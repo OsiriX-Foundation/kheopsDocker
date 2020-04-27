@@ -168,6 +168,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${TIME_ZONE}:/etc/timezone:ro
+      - letsencrypt:/etc/letsencrypt
     ports:
       - "80:80"
       - "443:443"
@@ -245,6 +246,7 @@ volumes:
   dcm4chee-db-data:
   dcm4chee-arc-wildfly:
   kheops-db-data:
+  letsencrypt:
 
 networks:
   kheops_network:
