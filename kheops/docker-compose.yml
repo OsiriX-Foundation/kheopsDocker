@@ -78,6 +78,10 @@ services:
     depends_on:
       - auth-db
       - arc
+    environment:
+      - JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8089"
+    ports:
+      - "8089:8089"
     secrets:
       - kheops_superuser_hmasecret
       - kheops_auth_hmasecret
