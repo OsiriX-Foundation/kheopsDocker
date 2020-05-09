@@ -50,7 +50,6 @@ services:
       - kheops_superuser_hmasecret
       - kheops_auth_hmasecret
       - kheops_authdb_pass
-      - kheops_keycloak_clientsecret
       - kheops_client_dicomwebproxysecret
       - kheops_client_zippersecret
       - kheops_metric_ressource_password
@@ -151,8 +150,6 @@ secrets:
     file: ${SECRETS_PATH}/kheops_auth_hmasecret_post
   OAuth2_secret:
     file: ${SECRETS_PATH}/OAuth2_secret
-  kheops_keycloak_clientsecret:
-    file: ${SECRETS_PATH}/kheops_keycloak_clientsecret
   kheops_client_dicomwebproxysecret:
     file: ${SECRETS_PATH}/kheops_client_dicomwebproxysecret
   kheops_client_zippersecret:
