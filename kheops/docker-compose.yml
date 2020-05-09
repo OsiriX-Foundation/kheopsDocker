@@ -30,7 +30,7 @@ services:
       - ${TIME_ZONE}:/etc/timezone:ro
       # - /dcm4chee-arc-wildfly:/opt/wildfly/standalone
       # - /dcm4chee-arc/storage:/storage
-      - /medirad11_archive:/opt/wildfly/standalone
+      - ./standalone:/opt/wildfly/standalone
       - /medirad11_archive:/storage
     restart: on-failure
 
