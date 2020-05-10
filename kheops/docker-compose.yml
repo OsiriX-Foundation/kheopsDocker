@@ -7,8 +7,8 @@ services:
     image: dcm4che/slapd-dcm4chee:2.4.48-19.1
     env_file: docker-compose.env
     volumes:
-      - dcm4chee-ldap-ldap:/var/lib/ldap
-      - dcm4chee-ldap-slapdd:/etc/ldap/slapd.d
+      - dcm4chee-ldap-ldap:/var/lib/openldap/openldap-data
+      - dcm4chee-ldap-slapdd:/etc/openldap/slapd.d
     restart: on-failure
 
   arc:
