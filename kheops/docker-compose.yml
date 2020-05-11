@@ -137,7 +137,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - letsencrypt:/etc/letsencrypt
+      - ./letsencrypt:/etc/letsencrypt
     depends_on:
       - kheops-authorization
       - kheops-dicomweb-proxy
@@ -191,7 +191,7 @@ volumes:
   kheops-db-data:
   logs_auth:
   logs_proxy:
-  letsencrypt:
+
   
 networks:
   kheops_network:
