@@ -52,7 +52,6 @@ services:
       - KHEOPS_AUTHORIZATION_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
       - KHEOPS_AUTHORIZATION_LOGSTASH_URL=kibana.kheops.online:5044
     secrets:
-      - kheops_superuser_hmasecret
       - kheops_auth_hmasecret
       - kheops_authdb_pass
       - kheops_client_dicomwebproxysecret
@@ -156,8 +155,6 @@ secrets:
     file: secrets/kheops_authdb_pass
   kheops_pacsdb_pass:
     file: secrets/kheops_pacsdb_pass
-  kheops_superuser_hmasecret:
-    file: secrets/kheops_superuser_hmasecret
   kheops_auth_hmasecret:
     file: secrets/kheops_auth_hmasecret
   kheops_auth_hmasecret_post:
