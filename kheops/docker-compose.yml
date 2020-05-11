@@ -6,7 +6,7 @@ services:
     container_name: pacsldap
     image: dcm4che/slapd-dcm4chee:2.4.48-22.1
     environment:
-      STORAGE_DIR: /storage/fs1
+      - STORAGE_DIR=/storage/fs1
     env_file: docker-compose.env
     volumes:
       - dcm4chee-ldap-ldap:/var/lib/openldap/openldap-data
@@ -21,12 +21,12 @@ services:
       context: ./kheops-dcm4chee-arc-psql
     env_file: docker-compose.env
     environment:
-      WILDFLY_CHOWN: /opt/wildfly/standalone
-      WILDFLY_WAIT_FOR: ldap:389
-      JAVA_OPTS: -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n
-      POSTGRES_DB: ${INSTANCE_NAME:?err}_pacs
-      POSTGRES_USER: ${INSTANCE_NAME:?err}_pacs
-      POSTGRES_PASSWORD_FILE: /run/secrets/kheops_pacsdb_pass
+      - WIfLDFLY_CHOWN=/opt/wildfly/standalone
+      - WILDFLY_WAIT_FOR=ldap:389
+      - JAVA_OPTS=-Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
+      - POSTGRES_DB=${INSTANCE_NAME:?err}_pacs
+      - POSTGRES_USER=${INSTANCE_NAME:?err}_pacs
+      - POSTGRES_PASSWORD_FILE=/run/secrets/kheops_pacsdb_pass
     secrets:
       - kheops_pacsdb_pass
     depends_on:
@@ -86,14 +86,14 @@ services:
     image: osirixfoundation/kheops-ui:v0.9.4
     env_file: docker-compose.env
     environment:
-      KHEOPS_ROOT_URL: https://${INSTANCE_NAME:?err}.kheops.online
-      KHEOPS_OIDC_PROVIDER: https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
-      KHEOPS_UI_TITLE: Kheops
-      KHEOPS_UI_CLIENTID: loginConnect
-      KHEOPS_UI_USER_MANAGEMENT_URL: https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}/account
-      KHEOPS_VIEWER_URL: https://ohif.kheops.online
-      KHEOPS_VIEWER_SM_URL: https://reportprovider.kheops.online/wsi-viewer
-      KHEOPS_UI_ENABLE_ELASTIC: "false"
+      - KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
+      - KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
+      - KHEOPS_UI_TITLE=Kheops
+      - KHEOPS_UI_CLIENTID=loginConnect
+      - KHEOPS_UI_USER_MANAGEMENT_URL=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}/account
+      - KHEOPS_VIEWER_URL=https://ohif.kheops.online
+      - KHEOPS_VIEWER_SM_URL=https://reportprovider.kheops.online/wsi-viewer
+      - KHEOPS_UI_ENABLE_ELASTIC=false
     restart: on-failure
     depends_on:
       - kheops-authorization
@@ -107,8 +107,8 @@ services:
     restart: on-failure
     env_file: docker-compose.env
     environment:
-      CATALINA_OPTS: "-Duser.timezone=Europe/Zurich"
-      KHEOPS_ROOT_URL: https://${INSTANCE_NAME:?err}.kheops.online
+      - CATALINA_OPTS="-Duser.timezone=Europe/Zurich"
+      - KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
     depends_on:
       - kheops-authorization
       - arc
@@ -151,9 +151,9 @@ services:
   pacs-authorization-proxy:
     container_name: pacsauthorizationproxy
     environment:
-      KHEOPS_PEP_ENABLE_ELASTIC: "true"
-      KHEOPS_PEP_ELASTIC_INSTANCE: ${INSTANCE_NAME:?err}
-      KHEOPS_PEP_LOGSTASH_URL: kibana.kheops.online:5044
+      - KHEOPS_PEP_ENABLE_ELASTIC=true
+      - KHEOPS_PEP_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
+      - KHEOPS_PEP_LOGSTASH_URL=kibana.kheops.online:5044
     env_file: docker-compose.env
     image: osirixfoundation/pacs-authorization-proxy:v0.9.4
     depends_on:
