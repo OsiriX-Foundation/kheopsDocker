@@ -33,7 +33,7 @@ services:
       - kheops_pacsdb_pass
     volumes:
       - dcm4chee-arc-standalone:/opt/wildfly/standalone
-      - /medirad12_archive:/storage
+      - ${ARCHIVE_PATH:?err}:/storage
     networks:
       - pacs_network
 
