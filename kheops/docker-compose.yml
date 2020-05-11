@@ -4,7 +4,9 @@ services:
 
   ldap:
     container_name: pacsldap
-    image: dcm4che/slapd-dcm4chee:2.4.48-19.1
+    image: dcm4che/slapd-dcm4chee:2.4.48-22.1
+    environment:
+      STORAGE_DIR: /storage/fs1
     env_file: docker-compose.env
     volumes:
       - dcm4chee-ldap-ldap:/var/lib/openldap/openldap-data
@@ -25,7 +27,6 @@ services:
       POSTGRES_DB: ${INSTANCE_NAME:?err}_pacs
       POSTGRES_USER: ${INSTANCE_NAME:?err}_pacs
       POSTGRES_PASSWORD_FILE: /run/secrets/kheops_pacsdb_pass
-      STORAGE_DIR: /storage/fs1
     secrets:
       - kheops_pacsdb_pass
     depends_on:
