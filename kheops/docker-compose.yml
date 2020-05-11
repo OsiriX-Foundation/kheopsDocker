@@ -27,6 +27,7 @@ services:
       - POSTGRES_DB=${INSTANCE_NAME:?err}_pacs
       - POSTGRES_USER=${INSTANCE_NAME:?err}_pacs
       - POSTGRES_PASSWORD_FILE=/run/secrets/kheops_pacsdb_pass
+      - POSTGRES_HOST=10.5.6.2
     secrets:
       - kheops_pacsdb_pass
     depends_on:
@@ -48,6 +49,7 @@ services:
       - KHEOPS_WELCOMEBOT_WEBHOOK
       - KHEOPS_AUTHDB_USER=${INSTANCE_NAME:?err}_authorization
       - KHEOPS_AUTHDB_NAME=${INSTANCE_NAME:?err}_authorization
+      - KHEOPS_AUTHDB_URL=postgresql://10.5.6.2:5432
       - KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
       - KHEOPS_AUTHORIZATION_ENABLE_ELASTIC=true
       - KHEOPS_AUTHORIZATION_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
