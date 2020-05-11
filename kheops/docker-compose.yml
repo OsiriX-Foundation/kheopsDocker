@@ -16,7 +16,7 @@ services:
       - pacs_network
 
   arc:
-    container_name: pacsarc
+    container_name: kheopspacsarc
     build:
       context: ./kheops-dcm4chee-arc-psql
     env_file: docker-compose.env
