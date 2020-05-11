@@ -7,7 +7,6 @@ services:
     image: dcm4che/slapd-dcm4chee:2.4.48-22.1
     environment:
       - STORAGE_DIR=/storage/fs1
-    env_file: docker-compose.env
     volumes:
       - dcm4chee-ldap-ldap:/var/lib/openldap/openldap-data
       - dcm4chee-ldap-slapdd:/etc/openldap/slapd.d
@@ -19,7 +18,6 @@ services:
     container_name: kheopspacsarc
     build:
       context: ./kheops-dcm4chee-arc-psql
-    env_file: docker-compose.env
     environment:
       - WILDFLY_CHOWN=/opt/wildfly/standalone
       - WILDFLY_WAIT_FOR=ldap:389
@@ -30,8 +28,6 @@ services:
       - POSTGRES_HOST=10.5.6.2
     secrets:
       - kheops_pacsdb_pass
-    depends_on:
-      - ldap
     volumes:
       - dcm4chee-arc-standalone:/opt/wildfly/standalone
       - /medirad12_archive:/storage
@@ -54,8 +50,6 @@ services:
       - KHEOPS_AUTHORIZATION_ENABLE_ELASTIC=true
       - KHEOPS_AUTHORIZATION_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
       - KHEOPS_AUTHORIZATION_LOGSTASH_URL=kibana.kheops.online:5044
-    depends_on:
-      - arc
     secrets:
       - kheops_superuser_hmasecret
       - kheops_auth_hmasecret
@@ -75,8 +69,6 @@ services:
     image: osirixfoundation/kheops-zipper:v0.9.4
     restart: on-failure
     env_file: docker-compose.env
-    depends_on:
-      - arc
     secrets:
       - kheops_client_zippersecret
     networks:
@@ -96,9 +88,6 @@ services:
       - KHEOPS_VIEWER_SM_URL=https://reportprovider.kheops.online/wsi-viewer
       - KHEOPS_UI_ENABLE_ELASTIC=false
     restart: on-failure
-    depends_on:
-      - kheops-authorization
-      - arc
     networks:
       - frontend_network
 
@@ -109,9 +98,6 @@ services:
     env_file: docker-compose.env
     environment:
       - KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
-    depends_on:
-      - kheops-authorization
-      - arc
     secrets:
       - kheops_auth_hmasecret_post
       - kheops_client_dicomwebproxysecret
@@ -138,7 +124,7 @@ services:
     depends_on:
       - kheops-authorization
       - kheops-dicomweb-proxy
-      - arc
+      - kheops-zipper
       - pacs-authorization-proxy
     networks:
       - kheops_network
