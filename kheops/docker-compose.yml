@@ -1,4 +1,8 @@
-version: '3.1'
+version: '3.7'
+
+x-environment:
+  - &oidc-provider KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
+  - &root-url KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
 
 services:
 
@@ -38,12 +42,12 @@ services:
     image: osirixfoundation/kheops-authorization:v0.9.4-max10
     env_file: docker-compose.env
     environment:
-      - KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
+      - *root-url
+      - *oidc-provider
       - KHEOPS_WELCOMEBOT_WEBHOOK
       - KHEOPS_AUTHDB_USER=${INSTANCE_NAME:?err}_authorization
       - KHEOPS_AUTHDB_NAME=${INSTANCE_NAME:?err}_authorization
-      - KHEOPS_AUTHDB_URL=postgresql://10.5.6.2:5432
-      - KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
+      - KHEOPS_AUTHDB_URL=postgresql://10.5.6.2:5432r
       - KHEOPS_AUTHORIZATION_ENABLE_ELASTIC=true
       - KHEOPS_AUTHORIZATION_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
       - KHEOPS_AUTHORIZATION_LOGSTASH_URL=kibana.kheops.online:5044
@@ -75,8 +79,8 @@ services:
     image: osirixfoundation/kheops-ui:v0.9.4
     env_file: docker-compose.env
     environment:
-      - KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
-      - KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
+      - *root-url
+      - *oidc-provider
       - KHEOPS_UI_TITLE=Kheops
       - KHEOPS_UI_CLIENTID=loginConnect
       - KHEOPS_UI_USER_MANAGEMENT_URL=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}/account
@@ -91,7 +95,7 @@ services:
     image: osirixfoundation/kheops-dicomweb-proxy:v0.9.4
     env_file: docker-compose.env
     environment:
-      - KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
+      - *root-url
     secrets:
       - kheops_auth_hmasecret_post
       - kheops_client_dicomwebproxysecret
@@ -104,8 +108,8 @@ services:
     image: osirixfoundation/kheops-reverse-proxy:v0.9.4-letsencrypt
     container_name: kheopsreverseproxy
     environment:
-      - KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
-      - KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
+      - *root-url
+      - *oidc-provider
       - KHEOPS_REVERSE_PROXY_ENABLE_ELASTIC=true
       - KHEOPS_REVERSE_PROXY_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
       - KHEOPS_REVERSE_PROXY_LOGSTASH_URL=kibana.kheops.online:5044
