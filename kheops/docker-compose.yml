@@ -21,7 +21,7 @@ services:
       context: ./kheops-dcm4chee-arc-psql
     env_file: docker-compose.env
     environment:
-      - WIfLDFLY_CHOWN=/opt/wildfly/standalone
+      - WILDFLY_CHOWN=/opt/wildfly/standalone
       - WILDFLY_WAIT_FOR=ldap:389
       - JAVA_OPTS=-Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
       - POSTGRES_DB=${INSTANCE_NAME:?err}_pacs
@@ -44,7 +44,6 @@ services:
     restart: on-failure
     env_file: docker-compose.env
     environment:
-      - CATALINA_OPTS="-Duser.timezone=UTC"
       - KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
       - KHEOPS_WELCOMEBOT_WEBHOOK
       - KHEOPS_AUTHDB_USER=${INSTANCE_NAME:?err}_authorization
@@ -107,7 +106,6 @@ services:
     restart: on-failure
     env_file: docker-compose.env
     environment:
-      - CATALINA_OPTS="-Duser.timezone=Europe/Zurich"
       - KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
     depends_on:
       - kheops-authorization
