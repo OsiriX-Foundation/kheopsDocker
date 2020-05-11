@@ -158,7 +158,8 @@ services:
 
   irdbb-import:
     container_name: irdbbimport
-    image: osirixfoundation/irdbb-import:medirad
+    image: osirixfoundation/irdbb-import:v1.0.1
+    env_file: docker-compose.env
     restart: on-failure
     networks:
       - kheops_network
