@@ -44,13 +44,15 @@ services:
     restart: on-failure
     env_file: docker-compose.env
     environment:
-      CATALINA_OPTS: -Duser.timezone=UTC
-      KHEOPS_AUTHDB_USER: ${INSTANCE_NAME:?err}_authorization
-      KHEOPS_AUTHDB_NAME: ${INSTANCE_NAME:?err}_authorization
-      KHEOPS_OIDC_PROVIDER: https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
-      KHEOPS_AUTHORIZATION_ENABLE_ELASTIC: "true"
-      KHEOPS_AUTHORIZATION_ELASTIC_INSTANCE: ${INSTANCE_NAME:?err}
-      KHEOPS_AUTHORIZATION_LOGSTASH_URL: kibana.kheops.online:5044
+      - CATALINA_OPTS="-Duser.timezone=UTC"
+      - KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
+      - KHEOPS_WELCOMEBOT_WEBHOOK
+      - KHEOPS_AUTHDB_USER=${INSTANCE_NAME:?err}_authorization
+      - KHEOPS_AUTHDB_NAME=${INSTANCE_NAME:?err}_authorization
+      - KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
+      - KHEOPS_AUTHORIZATION_ENABLE_ELASTIC=true
+      - KHEOPS_AUTHORIZATION_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
+      - KHEOPS_AUTHORIZATION_LOGSTASH_URL=kibana.kheops.online:5044
     depends_on:
       - arc
     secrets:
@@ -84,6 +86,7 @@ services:
     image: osirixfoundation/kheops-ui:v0.9.4
     env_file: docker-compose.env
     environment:
+      KHEOPS_ROOT_URL: https://${INSTANCE_NAME:?err}.kheops.online
       KHEOPS_OIDC_PROVIDER: https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
       KHEOPS_UI_TITLE: Kheops
       KHEOPS_UI_CLIENTID: loginConnect
@@ -104,7 +107,8 @@ services:
     restart: on-failure
     env_file: docker-compose.env
     environment:
-      - CATALINA_OPTS="-Duser.timezone=Europe/Zurich"
+      CATALINA_OPTS: "-Duser.timezone=Europe/Zurich"
+      KHEOPS_ROOT_URL: https://${INSTANCE_NAME:?err}.kheops.online
     depends_on:
       - kheops-authorization
       - arc
@@ -120,10 +124,11 @@ services:
     image: osirixfoundation/kheops-reverse-proxy:v0.9.4-letsencrypt
     container_name: kheopsreverseproxy
     environment:
-      KHEOPS_OIDC_PROVIDER: https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
-      KHEOPS_REVERSE_PROXY_ENABLE_ELASTIC: "true"
-      KHEOPS_REVERSE_PROXY_ELASTIC_INSTANCE: ${INSTANCE_NAME:?err}
-      KHEOPS_REVERSE_PROXY_LOGSTASH_URL: kibana.kheops.online:5044
+      - KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
+      - KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
+      - KHEOPS_REVERSE_PROXY_ENABLE_ELASTIC=true
+      - KHEOPS_REVERSE_PROXY_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
+      - KHEOPS_REVERSE_PROXY_LOGSTASH_URL=kibana.kheops.online:5044
     env_file: docker-compose.env
     volumes:
       - letsencrypt:/etc/letsencrypt
@@ -140,7 +145,7 @@ services:
       - frontend_network
       - reverseproxy_network
     extra_hosts:
-      - "${ROOT_URL}:127.0.0.1"
+      - "${INSTANCE_NAME:?err}.kheops.online:127.0.0.1"
       - "kibana.kheops.online:10.5.7.8"
 
   pacs-authorization-proxy:
