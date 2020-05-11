@@ -33,7 +33,7 @@ services:
 
 # The main DCM4CHEE container
   pacs-arc:
-    container_name: pacsarc
+    container_name: kheops-pacsarc
     image: dcm4che/dcm4chee-arc-psql:5.21.0
     env_file: docker-compose.env
     environment:
@@ -124,8 +124,6 @@ services:
     image: osirixfoundation/kheops-reverse-proxy:v0.9.4-insecure
     container_name: kheopsreverseproxy
     env_file: docker-compose.env
-    ports:
-      - "80:8042"
     depends_on:
       - kheops-authorization
       - kheops-dicomweb-proxy
@@ -155,7 +153,8 @@ services:
 
   irdbb-import:
     container_name: irdbbimport
-    image: osirixfoundation/irdbb-import:medirad
+    image: osirixfoundation/irdbb-import:v1.0.1
+    env_file: docker-compose.env
     restart: on-failure
     networks:
       - kheops_network
