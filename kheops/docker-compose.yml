@@ -76,7 +76,7 @@ services:
     image: osirixfoundation/kheops-authorization:v0.9.4
     env_file: docker-compose.env
     environment:
-      CATALINA_OPTS: -Duser.timezone=UTC
+      - JAVA_OPTS=-Xms64m -Xmx512m -Djava.net.preferIPv4Stack=true
     depends_on:
       - kheops-postgres
     secrets:
@@ -95,6 +95,8 @@ services:
   kheops-zipper:
     container_name: kheopszipper
     image: osirixfoundation/kheops-zipper:v0.9.4
+    environment:
+      - JAVA_OPTS=-Xms64m -Xmx512m -Djava.net.preferIPv4Stack=true
     env_file: docker-compose.env
     secrets:
       - kheops_client_zippersecret
@@ -111,6 +113,8 @@ services:
   kheops-dicomweb-proxy:
     container_name: kheopsdicomwebproxy
     image: osirixfoundation/kheops-dicomweb-proxy:v0.9.4
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx512m -Djava.net.preferIPv4Stack=true
     env_file: docker-compose.env
     secrets:
       - kheops_auth_hmasecret_post
