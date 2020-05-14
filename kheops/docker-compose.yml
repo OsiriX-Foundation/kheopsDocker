@@ -1,198 +1,177 @@
-version: '3.1'
-#https://github.com/docker-library/postgres/issues/151
+version: '3.7'
+
+x-environment:
+  - &oidc-provider KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
+  - &root-url KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
+
 services:
+
   ldap:
     container_name: pacsldap
-    image: dcm4che/slapd-dcm4chee:${PACS_LDAP_IMAGE_TAG}
-    env_file: docker-compose.env
+    image: dcm4che/slapd-dcm4chee:2.4.48-22.1
+    environment:
+      - STORAGE_DIR=/storage/fs1
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
-      - dcm4chee-ldap-ldap:/var/lib/ldap
-      - dcm4chee-ldap-slapdd:/etc/ldap/slapd.d
-    restart: on-failure
+      - dcm4chee-ldap-ldap:/var/lib/openldap/openldap-data
+      - dcm4chee-ldap-slapdd:/etc/openldap/slapd.d
     networks:
       - pacs_network
 
   arc:
     container_name: kheopspacsarc
-    image: osirixfoundation/kheops-dcm4chee-arc-psql:${KHEOPS_ARC_IMAGE_TAG}
-    env_file: docker-compose.env
+    build:
+      context: ./kheops-dcm4chee-arc-psql
     environment:
-      WILDFLY_CHOWN: /storage /opt/wildfly/standalone
-      WILDFLY_WAIT_FOR: ldap:389
-      JAVA_OPTS: -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n
+      - WILDFLY_CHOWN=/opt/wildfly/standalone
+      - WILDFLY_WAIT_FOR=ldap:389
+      - JAVA_OPTS=-Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
+      - POSTGRES_DB=${INSTANCE_NAME:?err}_pacs
+      - POSTGRES_USER=${INSTANCE_NAME:?err}_pacs
+      - POSTGRES_PASSWORD_FILE=/run/secrets/kheops_pacsdb_pass
+      - POSTGRES_HOST=10.5.6.2
     secrets:
       - kheops_pacsdb_pass
-    depends_on:
-      - ldap
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
-      - /dcm4chee-standalone:/opt/wildfly/standalone
-      - /d4docker_archive:/storage
-    restart: on-failure
+      - dcm4chee-arc-standalone:/opt/wildfly/standalone
+      - ${ARCHIVE_PATH:?err}:/storage
     networks:
       - pacs_network
 
-
   kheops-authorization:
     container_name: kheopsauthorization
-    image: osirixfoundation/kheops-authorization:${KHEOPS_AUTHORIZATION}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
-    restart: on-failure
+    image: osirixfoundation/kheops-authorization:v0.9.4-max10
     env_file: docker-compose.env
     environment:
-      - CATALINA_OPTS="-Duser.timezone=UTC"
-    depends_on:
-      - arc
+      - *root-url
+      - *oidc-provider
+      - KHEOPS_WELCOMEBOT_WEBHOOK
+      - KHEOPS_AUTHDB_USER=${INSTANCE_NAME:?err}_authorization
+      - KHEOPS_AUTHDB_NAME=${INSTANCE_NAME:?err}_authorization
+      - KHEOPS_AUTHDB_URL=postgresql://10.5.6.2:5432
+      - KHEOPS_AUTHORIZATION_ENABLE_ELASTIC=true
+      - KHEOPS_AUTHORIZATION_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
+      - KHEOPS_AUTHORIZATION_LOGSTASH_URL=kibana.kheops.online:5044
     secrets:
       - kheops_auth_hmasecret
       - kheops_authdb_pass
-      - kheops_keycloak_clientsecret
       - kheops_client_dicomwebproxysecret
       - kheops_client_zippersecret
       - kheops_metric_ressource_password
-    extra_hosts:
-      - "keycloak.kheops.online:10.5.5.29"
-      - "kibana.kheops.online:10.5.5.31"
-      - "reportprovider.kheops.online:10.5.5.33"
     networks:
       - kheops_network
+    extra_hosts:
+      - "keycloak.kheops.online:10.5.5.29"
+      - "kibana.kheops.online:10.5.7.8"
+      - "reportprovider.kheops.online:10.5.5.33"
 
   kheops-zipper:
     container_name: kheopszipper
-    image: osirixfoundation/kheops-zipper:${KHEOPS_VERSION}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
-    restart: on-failure
+    image: osirixfoundation/kheops-zipper:v0.9.4
     env_file: docker-compose.env
-    depends_on:
-      - arc
     secrets:
       - kheops_client_zippersecret
     networks:
       - kheops_network
 
-
   kheops-ui:
     container_name: kheopsui
-    image: osirixfoundation/kheops-ui:${KHEOPS_VERSION}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
+    image: osirixfoundation/kheops-ui:v0.9.4
     env_file: docker-compose.env
-    restart: on-failure
-    depends_on:
-      - kheops-authorization
-      - arc
+    environment:
+      - *root-url
+      - *oidc-provider
+      - KHEOPS_UI_TITLE=Kheops
+      - KHEOPS_UI_CLIENTID=loginConnect
+      - KHEOPS_UI_USER_MANAGEMENT_URL=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}/account
+      - KHEOPS_VIEWER_URL=https://ohif.kheops.online
+      - KHEOPS_VIEWER_SM_URL=https://reportprovider.kheops.online/wsi-viewer
+      - KHEOPS_UI_ENABLE_ELASTIC=false
     networks:
       - frontend_network
 
-
   kheops-dicomweb-proxy:
     container_name: kheopsdicomwebproxy
-    image: osirixfoundation/kheops-dicomweb-proxy:${KHEOPS_VERSION}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
-    restart: on-failure
+    image: osirixfoundation/kheops-dicomweb-proxy:v0.9.4
     env_file: docker-compose.env
     environment:
-      - CATALINA_OPTS="-Duser.timezone=Europe/Zurich"
-    depends_on:
-      - kheops-authorization
-      - arc
+      - *root-url
     secrets:
       - kheops_auth_hmasecret_post
       - kheops_client_dicomwebproxysecret
-    extra_hosts:
-      - "kibana.kheops.online:10.5.5.31"
     networks:
       - kheops_network
-
+    extra_hosts:
+      - "kibana.kheops.online:10.5.7.8"
 
   kheops-reverse-proxy:
-    image: osirixfoundation/kheops-reverse-proxy:${KHEOPS_REVERSE_PROXY}
+    image: osirixfoundation/kheops-reverse-proxy:v0.9.4-letsencrypt
     container_name: kheopsreverseproxy
-    secrets:
-      - privkey1.pem
-      - fullchain1.pem
+    environment:
+      - *root-url
+      - *oidc-provider
+      - KHEOPS_REVERSE_PROXY_ENABLE_ELASTIC=true
+      - KHEOPS_REVERSE_PROXY_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
+      - KHEOPS_REVERSE_PROXY_LOGSTASH_URL=kibana.kheops.online:5044
     env_file: docker-compose.env
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
+      - letsencrypt:/etc/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
     depends_on:
       - kheops-authorization
       - kheops-dicomweb-proxy
-      - arc
+      - kheops-zipper
       - pacs-authorization-proxy
-    extra_hosts:
-      - "${ROOT_URL}:127.0.0.1"
-      - "kibana.kheops.online:10.5.5.31"
     networks:
       - kheops_network
       - frontend_network
       - reverseproxy_network
+    extra_hosts:
+      - "${INSTANCE_NAME:?err}.kheops.online:127.0.0.1"
+      - "kibana.kheops.online:10.5.7.8"
 
   pacs-authorization-proxy:
     container_name: pacsauthorizationproxy
+    environment:
+      - KHEOPS_PEP_ENABLE_ELASTIC=true
+      - KHEOPS_PEP_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
+      - KHEOPS_PEP_LOGSTASH_URL=kibana.kheops.online:5044
     env_file: docker-compose.env
-    image: osirixfoundation/pacs-authorization-proxy:${KHEOPS_VERSION}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${TIME_ZONE}:/etc/timezone:ro
+    image: osirixfoundation/pacs-authorization-proxy:v0.9.4
     depends_on:
       - arc
     secrets:
       - kheops_auth_hmasecret
       - kheops_auth_hmasecret_post
-    extra_hosts:
-      - "kibana.kheops.online:10.5.5.31"
     networks:
       - kheops_network
       - pacs_network
-
-  irdbb-import:
-    container_name: irdbbimport
-    image: osirixfoundation/irdbb-import:v1.0.1
-    env_file: docker-compose.env
-    restart: on-failure
-    networks:
-      - kheops_network
-      - irdbb_importer_network
+    extra_hosts:
+      - "kibana.kheops.online:10.5.7.8"
 
 secrets:
   kheops_authdb_pass:
-    file: ${SECRETS_PATH}/kheops_authdb_pass
+    file: secrets/kheops_authdb_pass
   kheops_pacsdb_pass:
-    file: ${SECRETS_PATH}/kheops_pacsdb_pass
+    file: secrets/kheops_pacsdb_pass
   kheops_auth_hmasecret:
-    file: ${SECRETS_PATH}/kheops_auth_hmasecret
+    file: secrets/kheops_auth_hmasecret
   kheops_auth_hmasecret_post:
-    file: ${SECRETS_PATH}/kheops_auth_hmasecret_post
-  privkey1.pem:
-    file: ${NGINX_KEY}/privkey1.pem
-  fullchain1.pem:
-    file: ${NGINX_KEY}/fullchain1.pem
-  OAuth2_secret:
-    file: ${SECRETS_PATH}/OAuth2_secret
-  kheops_keycloak_clientsecret:
-    file: ${SECRETS_PATH}/kheops_keycloak_clientsecret
+    file: secrets/kheops_auth_hmasecret_post
   kheops_client_dicomwebproxysecret:
-    file: ${SECRETS_PATH}/kheops_client_dicomwebproxysecret
+    file: secrets/kheops_client_dicomwebproxysecret
   kheops_client_zippersecret:
-    file: ${SECRETS_PATH}/kheops_client_zippersecret
+    file: secrets/kheops_client_zippersecret
   kheops_metric_ressource_password:
-    file: ${SECRETS_PATH}/kheops_metric_ressource_password
+    file: secrets/kheops_metric_ressource_password
 
 volumes:
   dcm4chee-ldap-ldap:
   dcm4chee-ldap-slapdd:
-  dcm4chee-db-data:
+  dcm4chee-arc-standalone:
+  letsencrypt:
+
 
 networks:
   kheops_network:
@@ -219,9 +198,4 @@ networks:
       driver: default
       config:
         - subnet: "172.16.103.0/24"
-  irdbb_importer_network:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.16.104.0/24"
+
