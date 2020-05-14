@@ -1,7 +1,7 @@
 version: '3.7'
 
 x-environment:
-  - &oidc-provider KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
+  - &oidc-provider KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/irdbb
   - &root-url KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
 
 services:
@@ -81,7 +81,7 @@ services:
       - *root-url
       - *oidc-provider
       - KHEOPS_UI_TITLE=Kheops
-      - KHEOPS_UI_CLIENTID=loginConnect
+      - KHEOPS_UI_CLIENTID=irdbb-ui
       - KHEOPS_UI_USER_MANAGEMENT_URL=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}/account
       - KHEOPS_VIEWER_URL=https://ohif.kheops.online
       - KHEOPS_VIEWER_SM_URL=https://reportprovider.kheops.online/wsi-viewer
@@ -104,7 +104,7 @@ services:
       - "kibana.kheops.online:10.5.7.8"
 
   kheops-reverse-proxy:
-    image: osirixfoundation/kheops-reverse-proxy:v0.9.4-letsencrypt
+    image: osirixfoundation/kheops-reverse-proxy:v0.9.4-insecure
     container_name: kheopsreverseproxy
     environment:
       - *root-url
@@ -113,11 +113,6 @@ services:
       - KHEOPS_REVERSE_PROXY_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
       - KHEOPS_REVERSE_PROXY_LOGSTASH_URL=kibana.kheops.online:5044
     env_file: docker-compose.env
-    volumes:
-      - letsencrypt:/etc/letsencrypt
-    ports:
-      - "80:80"
-      - "443:443"
     depends_on:
       - kheops-authorization
       - kheops-dicomweb-proxy
