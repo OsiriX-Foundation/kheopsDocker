@@ -1,0 +1,25 @@
+version: '2.4'
+
+services:
+
+  irdbb-import:
+    container_name: irdbbimport
+    image: osirixfoundation/irdbb-import:v1.0.1
+    environment:
+      - IRDBB_TOKEN=LKSoDuZVl2
+    restart: on-failure
+    networks:
+      - kheops
+      - irdbb_importer_network
+
+networks:
+  irdbb_importer_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.104.0/24"
+  kheops:
+    external:
+      name: kheops_kheops_network
+
