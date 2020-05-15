@@ -51,3 +51,11 @@ volumes:
   keycloak-standalone:
   postgres_data:
   letsencrypt:
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.100.0/24"
