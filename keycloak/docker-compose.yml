@@ -9,7 +9,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
     secrets:
       - psql_password
-    restart: unless-stopped
 
   nginx:
     image: osirixfoundation/kheops-keycloak-nginx:${KHEOPS_KEYCLOAK_NGINX}
@@ -22,7 +21,6 @@ services:
     depends_on:
       - postgres
       - keycloak
-    restart: unless-stopped
 
   keycloak:
     image: jboss/keycloak:${KEYCLOAK_TAG}
@@ -44,7 +42,6 @@ services:
       - "smtp.unige.ch:10.194.9.232"
     secrets:
       - psql_password
-    restart: unless-stopped
 
 secrets:
   psql_password:
