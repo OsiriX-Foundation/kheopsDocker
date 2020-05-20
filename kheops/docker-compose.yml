@@ -72,6 +72,7 @@ services:
     image: osirixfoundation/kheops-authorization:${KHEOPS_AUTHORIZATION_IMAGE_TAG}
     volumes:
       - logs_auth:/usr/local/tomcat/logs
+      - filebeat_registry_auth:/var/lib/filebeat/registry/filebeat
     restart: on-failure
     env_file: docker-compose.env
     environment:
@@ -211,6 +212,7 @@ volumes:
   logs_auth:
   logs_proxy:
   letsencrypt:
+  filebeat_registry_auth:
   
 networks:
   kheops_network:
