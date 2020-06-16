@@ -39,7 +39,7 @@ services:
 
   kheops-authorization:
     container_name: kheopsauthorization
-    image: osirixfoundation/kheops-authorization:v0.9.4-max10
+    image: osirixfoundation/kheops-authorization:v0.9.5
     env_file: docker-compose.env
     environment:
       - *root-url
@@ -66,7 +66,7 @@ services:
 
   kheops-zipper:
     container_name: kheopszipper
-    image: osirixfoundation/kheops-zipper:v0.9.4
+    image: osirixfoundation/kheops-zipper:v0.9.5
     env_file: docker-compose.env
     secrets:
       - kheops_client_zippersecret
@@ -75,7 +75,7 @@ services:
 
   kheops-ui:
     container_name: kheopsui
-    image: osirixfoundation/kheops-ui:v0.9.4
+    image: osirixfoundation/kheops-ui:v0.9.5
     env_file: docker-compose.env
     environment:
       - *root-url
@@ -91,7 +91,7 @@ services:
 
   kheops-dicomweb-proxy:
     container_name: kheopsdicomwebproxy
-    image: osirixfoundation/kheops-dicomweb-proxy:v0.9.4
+    image: osirixfoundation/kheops-dicomweb-proxy:v0.9.5
     env_file: docker-compose.env
     environment:
       - *root-url
@@ -104,7 +104,7 @@ services:
       - "kibana.kheops.online:10.5.7.8"
 
   kheops-reverse-proxy:
-    image: osirixfoundation/kheops-reverse-proxy:v0.9.4-letsencrypt
+    image: osirixfoundation/kheops-reverse-proxy:v0.9.5-letsencrypt
     container_name: kheopsreverseproxy
     environment:
       - *root-url
@@ -138,7 +138,7 @@ services:
       - KHEOPS_PEP_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
       - KHEOPS_PEP_LOGSTASH_URL=kibana.kheops.online:5044
     env_file: docker-compose.env
-    image: osirixfoundation/pacs-authorization-proxy:v0.9.4
+    image: osirixfoundation/pacs-authorization-proxy:v0.9.5
     depends_on:
       - arc
     secrets:
