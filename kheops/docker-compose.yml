@@ -61,7 +61,7 @@ services:
       - kheops_network
     extra_hosts:
       - "keycloak.kheops.online:10.5.5.29"
-      - "kibana.kheops.online:10.5.7.8"
+      - "kibana.kheops.online:10.5.7.13"
       - "reportprovider.kheops.online:10.5.5.33"
 
   kheops-zipper:
@@ -101,7 +101,7 @@ services:
     networks:
       - kheops_network
     extra_hosts:
-      - "kibana.kheops.online:10.5.7.8"
+      - "kibana.kheops.online:10.5.7.13"
 
   kheops-reverse-proxy:
     image: osirixfoundation/kheops-reverse-proxy:v0.9.5-letsencrypt
@@ -129,7 +129,7 @@ services:
       - reverseproxy_network
     extra_hosts:
       - "${INSTANCE_NAME:?err}.kheops.online:127.0.0.1"
-      - "kibana.kheops.online:10.5.7.8"
+      - "kibana.kheops.online:10.5.7.13"
 
   pacs-authorization-proxy:
     container_name: pacsauthorizationproxy
@@ -148,7 +148,7 @@ services:
       - kheops_network
       - pacs_network
     extra_hosts:
-      - "kibana.kheops.online:10.5.7.8"
+      - "kibana.kheops.online:10.5.7.13"
 
 secrets:
   kheops_authdb_pass:
