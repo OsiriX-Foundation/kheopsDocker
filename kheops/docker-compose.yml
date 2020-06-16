@@ -1,8 +1,8 @@
 version: '3.7'
 
 x-environment:
-  - &oidc-provider KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
-  - &root-url KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
+  - &oidc-provider KHEOPS_OIDC_PROVIDER=https://login-lavim.unige.ch/auth/realms/lavim_unige
+  - &root-url KHEOPS_ROOT_URL=https://lavim.unige.ch
 
 services:
 
@@ -25,8 +25,8 @@ services:
       - WILDFLY_CHOWN=/opt/wildfly/standalone
       - WILDFLY_WAIT_FOR=ldap:389
       - JAVA_OPTS=-Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
-      - POSTGRES_DB=${INSTANCE_NAME:?err}_pacs
-      - POSTGRES_USER=${INSTANCE_NAME:?err}_pacs
+      - POSTGRES_DB=kheops_pacs
+      - POSTGRES_USER=kheops_pacs
       - POSTGRES_PASSWORD_FILE=/run/secrets/kheops_pacsdb_pass
       - POSTGRES_HOST=10.5.6.2
     secrets:
@@ -44,9 +44,9 @@ services:
     environment:
       - *root-url
       - *oidc-provider
-      - KHEOPS_WELCOMEBOT_WEBHOOK
-      - KHEOPS_AUTHDB_USER=${INSTANCE_NAME:?err}_authorization
-      - KHEOPS_AUTHDB_NAME=${INSTANCE_NAME:?err}_authorization
+      - KHEOPS_WELCOMEBOT_WEBHOOK=http://welcomebot:8080
+      - KHEOPS_AUTHDB_USER=kheops_authorization
+      - KHEOPS_AUTHDB_NAME=kheops_authorization
       - KHEOPS_AUTHDB_URL=postgresql://10.5.6.2:5432
       - KHEOPS_AUTHORIZATION_ENABLE_ELASTIC=true
       - KHEOPS_AUTHORIZATION_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
@@ -60,7 +60,7 @@ services:
     networks:
       - kheops_network
     extra_hosts:
-      - "keycloak.kheops.online:10.5.5.29"
+      - "login-lavim.unige.ch:10.5.5.29"
       - "kibana.kheops.online:10.5.7.13"
       - "reportprovider.kheops.online:10.5.5.33"
 
@@ -82,7 +82,7 @@ services:
       - *oidc-provider
       - KHEOPS_UI_TITLE=Kheops
       - KHEOPS_UI_CLIENTID=loginConnect
-      - KHEOPS_UI_USER_MANAGEMENT_URL=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}/account
+      - KHEOPS_UI_USER_MANAGEMENT_URL=https://login-lavim.unige.ch/auth/realms/lavim_unige/account
       - KHEOPS_VIEWER_URL=https://ohif.kheops.online
       - KHEOPS_VIEWER_SM_URL=https://reportprovider.kheops.online/wsi-viewer
       - KHEOPS_UI_ENABLE_ELASTIC=false
@@ -128,7 +128,7 @@ services:
       - frontend_network
       - reverseproxy_network
     extra_hosts:
-      - "${INSTANCE_NAME:?err}.kheops.online:127.0.0.1"
+      - "lavim.unige.ch:127.0.0.1"
       - "kibana.kheops.online:10.5.7.13"
 
   pacs-authorization-proxy:
@@ -150,6 +150,17 @@ services:
     extra_hosts:
       - "kibana.kheops.online:10.5.7.13"
 
+  welcomebot:
+    container_name: welcomebot
+    env_file: docker-compose.env
+    image: osirixfoundation/kheops-welcome-bot:lavim
+    environment:
+      - STUDENT_SHARING_ALBUM_ID=y7wTTbODmM
+    secrets:
+      - welcomebot_token
+    networks:
+      - kheops_network
+
 secrets:
   kheops_authdb_pass:
     file: secrets/kheops_authdb_pass
@@ -165,6 +176,8 @@ secrets:
     file: secrets/kheops_client_zippersecret
   kheops_metric_ressource_password:
     file: secrets/kheops_metric_ressource_password
+  welcomebot_token:
+    file: secrets/welcomebot_token
 
 volumes:
   dcm4chee-ldap-ldap:
