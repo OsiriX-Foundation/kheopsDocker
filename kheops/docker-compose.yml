@@ -96,6 +96,8 @@ services:
     secrets:
       - kheops_auth_hmasecret
       - kheops_auth_hmasecret_post
+    networks:
+      - pacs_network
 
 secrets:
   kheops_pacsdb_pass:
@@ -116,6 +118,11 @@ secrets:
     file: ${SECRETS_PATH}/kheops_client_zippersecret
   kheops_metric_ressource_password:
     file: ${SECRETS_PATH}/kheops_metric_ressource_password
+
+networks:
+  pacs_network:
+    external:
+      name: pacs_network
 
 volumes:
   dcm4chee-ldap-ldap:
