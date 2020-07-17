@@ -125,8 +125,4 @@ networks:
       name: pacs_network
 
 volumes:
-  dcm4chee-ldap-ldap:
-  dcm4chee-ldap-slapdd:
-  dcm4chee-db-data:
-  dcm4chee-arc-wildfly:
   kheops-db-data:
