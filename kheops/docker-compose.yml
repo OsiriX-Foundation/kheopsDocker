@@ -50,6 +50,10 @@ services:
     depends_on:
       - ldap
       - pacsdb
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
     volumes:
       - dcm4chee-arc-wildfly:/opt/wildfly/standalone
       - /dcm4chee-arc/storage:/storage
@@ -77,6 +81,10 @@ services:
       - keycloak-standalone-data:/opt/jboss/keycloak/standalone/data
       - ./keycloak/realm/kheops-realm.json:/tmp/kheops-realm.json:cached
       - ./keycloak/themes/kheops:/opt/jboss/keycloak/themes/kheops:cached
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
     networks:
       - keycloak_network
     secrets:
@@ -117,6 +125,10 @@ services:
       - kheops_client_dicomwebproxysecret
       - kheops_client_zippersecret
       - kheops_metric_ressource_password
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
     networks:
       - kheops_network
       - keycloak_network
@@ -128,6 +140,10 @@ services:
     env_file: docker-compose.env
     secrets:
       - kheops_client_zippersecret
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
     networks:
       - kheops_network
 
@@ -155,6 +171,10 @@ services:
     secrets:
       - kheops_auth_hmasecret_post
       - kheops_client_dicomwebproxysecret
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
     networks:
       - kheops_network
 
@@ -173,6 +193,10 @@ services:
       - wsiviewer
     extra_hosts:
       - "${ROOT_URL}:127.0.0.1"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
     networks:
       - kheops_network
       - frontend_network
@@ -186,6 +210,10 @@ services:
       - kheops_auth_hmasecret_post
     depends_on:
       - arc
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
     networks:
       - pacs_network
       - kheops_network
