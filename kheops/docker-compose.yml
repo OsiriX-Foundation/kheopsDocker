@@ -8,8 +8,8 @@ services:
     environment:
       - STORAGE_DIR=/storage/fs1
     volumes:
-      - dcm4chee-ldap-ldap:/var/lib/ldap
-      - dcm4chee-ldap-slapdd:/etc/ldap/slapd.d
+      - /volume1/pacs/ldap:/var/lib/ldap
+      - /volume1/pacs/slapd.d:/etc/ldap/slapd.d
     restart: on-failure
     networks:
       - pacs_network
@@ -27,7 +27,7 @@ services:
       - POSTGRES_PASSWORD_FILE=/run/secrets/pacs_db_password
       - STORAGE_DIR=/storage/fs1
     volumes:
-      - dcm4chee-db-data:/var/lib/postgresql/data
+      - /volume1/pacs/db:/var/lib/postgresql/data
     restart: on-failure
     secrets:
       - pacs_db_password
@@ -55,8 +55,8 @@ services:
       options:
         max-size: "10m"
     volumes:
-      - dcm4chee-arc-wildfly:/opt/wildfly/standalone
-      - /dcm4chee-arc/storage:/storage
+      - /volume1/pacs/wildfly:/opt/wildfly/standalone
+      - /volume1/pacs/storage:/storage
     restart: on-failure
     secrets:
       - pacs_db_password
@@ -78,7 +78,7 @@ services:
 # redirected to Keycloak using the frontend URL
       KEYCLOAK_FRONTEND_URL: http://kheopsinthebox.local:8080/auth
     volumes:
-      - keycloak-standalone-data:/opt/jboss/keycloak/standalone/data
+      - /volume1/pacs/keycloak:/opt/jboss/keycloak/standalone/data
       - ./keycloak/realm/kheops-realm.json:/tmp/kheops-realm.json:cached
       - ./keycloak/themes/kheops:/opt/jboss/keycloak/themes/kheops:cached
     logging:
@@ -95,7 +95,7 @@ services:
     container_name: authdb
     image: postgres:${KHEOPS_AUTHORIZATION_PSQL_DATABASE_IMAGE_TAG}
     volumes:
-      - kheops-db-data:/var/lib/postgresql/data
+      - /volume1/pacs/kheopsdb:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=kheops
       - POSTGRES_USER=kheopsuser
@@ -273,11 +273,3 @@ networks:
     driver: bridge
   frontend_network:
     driver: bridge
-
-volumes:
-  kheops-db-data:
-  keycloak-standalone-data:
-  dcm4chee-ldap-ldap:
-  dcm4chee-ldap-slapdd:
-  dcm4chee-db-data:
-  dcm4chee-arc-wildfly:
