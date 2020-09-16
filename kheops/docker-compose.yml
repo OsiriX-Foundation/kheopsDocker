@@ -61,7 +61,7 @@ services:
       - kheops_network
     extra_hosts:
       - "keycloak.kheops.online:10.5.5.29"
-      - "kibana.kheops.online:10.5.7.8"
+      - "kibana.kheops.online:10.5.7.13"
       - "reportprovider.kheops.online:10.5.5.33"
 
   kheops-zipper:
@@ -101,7 +101,7 @@ services:
     networks:
       - kheops_network
     extra_hosts:
-      - "kibana.kheops.online:10.5.7.8"
+      - "kibana.kheops.online:10.5.7.13"
 
   kheops-reverse-proxy:
     image: osirixfoundation/kheops-reverse-proxy:v0.9.4-insecure
@@ -124,7 +124,7 @@ services:
       - reverseproxy_network
     extra_hosts:
       - "${INSTANCE_NAME:?err}.kheops.online:127.0.0.1"
-      - "kibana.kheops.online:10.5.7.8"
+      - "kibana.kheops.online:10.5.7.13"
 
   pacs-authorization-proxy:
     container_name: pacsauthorizationproxy
@@ -143,7 +143,17 @@ services:
       - kheops_network
       - pacs_network
     extra_hosts:
-      - "kibana.kheops.online:10.5.7.8"
+      - "kibana.kheops.online:10.5.7.13"
+
+  irdbb-import:
+    container_name: irdbbimport
+    image: osirixfoundation/irdbb-import:v1.0.1
+    environment:
+      - IRDBB_TOKEN=jO0V6pZ42w
+    restart: on-failure
+    networks:
+      - kheops_network
+      - irdbb_importer_network
 
 secrets:
   kheops_authdb_pass:
@@ -194,3 +204,9 @@ networks:
       config:
         - subnet: "172.16.103.0/24"
 
+  irdbb_importer_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.104.0/24"
