@@ -51,6 +51,7 @@ services:
       - KHEOPS_AUTHORIZATION_ENABLE_ELASTIC=true
       - KHEOPS_AUTHORIZATION_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
       - KHEOPS_AUTHORIZATION_LOGSTASH_URL=kibana.kheops.online:5044
+      - KHEOPS_WELCOMEBOT_WEBHOOK=http://welcomebot:8080/share
     secrets:
       - kheops_auth_hmasecret
       - kheops_authdb_pass
@@ -183,7 +184,7 @@ secrets:
   kheops_metric_ressource_password:
     file: secrets/kheops_metric_ressource_password
   welcomebot_token:
-    file: ${SECRETS_PATH}/welcomebot_token  
+    file: secrets/welcomebot_token  
 
 volumes:
   dcm4chee-ldap-ldap:
