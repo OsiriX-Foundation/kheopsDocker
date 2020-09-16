@@ -155,6 +155,18 @@ services:
       - kheops_network
       - irdbb_importer_network
 
+  welcomebot:
+    container_name: welcomebot
+    env_file: docker-compose.env
+    image: osirixfoundation/irdbb-welcome-bot:latest
+    restart: on-failure
+    environment:
+      - MEDIRAD_ALBUM_ID=hxaLJ6gx0N
+    secrets:
+      - welcomebot_token
+    networks:
+      - kheops_network
+
 secrets:
   kheops_authdb_pass:
     file: secrets/kheops_authdb_pass
@@ -170,6 +182,8 @@ secrets:
     file: secrets/kheops_client_zippersecret
   kheops_metric_ressource_password:
     file: secrets/kheops_metric_ressource_password
+  welcomebot_token:
+    file: ${SECRETS_PATH}/welcomebot_token  
 
 volumes:
   dcm4chee-ldap-ldap:
