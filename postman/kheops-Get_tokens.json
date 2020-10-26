@@ -99,6 +99,19 @@
       "response": []
     },
     {
+      "name": "register user in keycloak",
+      "_postman_id": "ca9c8d3a-6a81-464b-86da-6840675ff168",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:8080/auth/admin/realms/kheops/users"
+      },
+      "response": []
+    },
+    {
       "name": "get token user 1 (titi)",
       "event": [
         {
@@ -386,19 +399,6 @@
           }
         },
         "url": "{{URL}}/register"
-      },
-      "response": []
-    },
-    {
-      "name": "register user in keycloak",
-      "_postman_id": "ca9c8d3a-6a81-464b-86da-6840675ff168",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": "http://localhost:8080/auth/admin/realms/kheops/users"
       },
       "response": []
     }
