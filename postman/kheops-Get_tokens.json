@@ -289,6 +289,94 @@
       "response": []
     },
     {
+      "name": "toto set password Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "bd0014ba-98bd-467c-a43b-105e9bb892dc",
+            "exec": [
+              "tests[\"Status code is 204\"] = responseCode.code === 204;"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "1a659ec3-ceda-4bec-aa96-753fa7cf24f9",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": {
+            "token": "{{keycloak_admin_access_token}}"
+          }
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"type\":\"password\", \"value\":\"toto\", \"temporary\":false}",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "{{user_loctaion}}/reset-password"
+      },
+      "response": []
+    },
+    {
+      "name": "toto set password Copy 2",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "05c6d6d4-f477-4a12-8e49-e4d13cc8203d",
+            "exec": [
+              "tests[\"Status code is 204\"] = responseCode.code === 204;"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "b15658c2-75c7-4e4c-a86c-2d9a82794381",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": {
+            "token": "{{keycloak_admin_access_token}}"
+          }
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"type\":\"password\", \"value\":\"toto\", \"temporary\":false}",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "{{user_loctaion}}/reset-password"
+      },
+      "response": []
+    },
+    {
       "name": "get token user 1 (titi)",
       "event": [
         {
