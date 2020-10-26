@@ -149,7 +149,51 @@
       "response": []
     },
     {
-      "name": "register user in keycloak toto Copy 2",
+      "name": "toto set password",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "50e9038c-b56b-47a2-bda2-a3ea58c3af1e",
+            "exec": [
+              "tests[\"Status code is 204\"] = responseCode.code === 204;"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "f7cf0ff2-f282-42cd-be4a-d3ea54460a44",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": {
+            "token": "{{keycloak_admin_access_token}}"
+          }
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"type\":\"password\", \"value\":\"toto\", \"temporary\":false}",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "{{user_loctaion}}/reset-password"
+      },
+      "response": []
+    },
+    {
+      "name": "register user in keycloak titi",
       "event": [
         {
           "listen": "test",
@@ -181,18 +225,62 @@
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json;charset=UTF-8",
-            "type": "text"
+            "type": "text",
+            "value": "application/json;charset=UTF-8"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"enabled\":true, \"attributes\":{}, \"username\":\"toto\", \"emailVerified\":true,\"email\":\"toto@gmail.com\", \"firstName\":\"toto\", \"lastName\":\"toto\"}",
+          "raw": "{\"enabled\":true, \"attributes\":{}, \"username\":\"titi\", \"emailVerified\":true,\"email\":\"titi@gmail.com\", \"firstName\":\"titi\", \"lastName\":\"titi\"}",
           "options": {
             "raw": {}
           }
         },
         "url": "http://localhost:8080/auth/admin/realms/kheops/users"
+      },
+      "response": []
+    },
+    {
+      "name": "titi set password",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "bd0014ba-98bd-467c-a43b-105e9bb892dc",
+            "exec": [
+              "tests[\"Status code is 204\"] = responseCode.code === 204;"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "1a659ec3-ceda-4bec-aa96-753fa7cf24f9",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": {
+            "token": "{{keycloak_admin_access_token}}"
+          }
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "type": "text",
+            "value": "application/json;charset=UTF-8"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"type\":\"password\", \"value\":\"titi\", \"temporary\":false}",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "{{user_loctaion}}/reset-password"
       },
       "response": []
     },
@@ -241,94 +329,6 @@
           }
         },
         "url": "http://localhost:8080/auth/admin/realms/kheops/users"
-      },
-      "response": []
-    },
-    {
-      "name": "toto set password",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "50e9038c-b56b-47a2-bda2-a3ea58c3af1e",
-            "exec": [
-              "tests[\"Status code is 204\"] = responseCode.code === 204;"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "_postman_id": "f7cf0ff2-f282-42cd-be4a-d3ea54460a44",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": {
-            "token": "{{keycloak_admin_access_token}}"
-          }
-        },
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json;charset=UTF-8",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"type\":\"password\", \"value\":\"toto\", \"temporary\":false}",
-          "options": {
-            "raw": {}
-          }
-        },
-        "url": "{{user_loctaion}}/reset-password"
-      },
-      "response": []
-    },
-    {
-      "name": "toto set password Copy",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "bd0014ba-98bd-467c-a43b-105e9bb892dc",
-            "exec": [
-              "tests[\"Status code is 204\"] = responseCode.code === 204;"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "_postman_id": "1a659ec3-ceda-4bec-aa96-753fa7cf24f9",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": {
-            "token": "{{keycloak_admin_access_token}}"
-          }
-        },
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json;charset=UTF-8",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"type\":\"password\", \"value\":\"toto\", \"temporary\":false}",
-          "options": {
-            "raw": {}
-          }
-        },
-        "url": "{{user_loctaion}}/reset-password"
       },
       "response": []
     },
