@@ -593,7 +593,11 @@
           "script": {
             "id": "866bf225-366a-432a-a7d6-62c91a16a27d",
             "exec": [
-              "tests[\"Status code is 200\"] = responseCode.code === 200;"
+              "tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+              "\r",
+              "var jsonObject = JSON.parse(responseBody);\r",
+              "\r",
+              "pm.globals.set(\"user1_id\", jsonObject.sub);"
             ],
             "type": "text/javascript"
           }
