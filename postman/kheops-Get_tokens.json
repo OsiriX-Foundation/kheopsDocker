@@ -323,7 +323,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"enabled\":true, \"attributes\":{}, \"username\":\"toto\", \"emailVerified\":true,\"email\":\"toto@gmail.com\", \"firstName\":\"toto\", \"lastName\":\"toto\"}",
+          "raw": "{\"enabled\":true, \"attributes\":{}, \"username\":\"tata\", \"emailVerified\":true,\"email\":\"tata@gmail.com\", \"firstName\":\"tata\", \"lastName\":\"tata\"}",
           "options": {
             "raw": {}
           }
