@@ -6,12 +6,12 @@
   },
   "item": [
     {
-      "name": "well-known",
+      "name": "well-known master",
       "event": [
         {
           "listen": "test",
           "script": {
-            "id": "ddcb929e-d97b-43a0-8d3c-d8af22b21dc1",
+            "id": "5fee9022-a2dd-44dc-9cc9-04dd8888775b",
             "exec": [
               "var jsonObject = JSON.parse(responseBody);",
               "",
@@ -26,14 +26,14 @@
           }
         }
       ],
-      "_postman_id": "fcdb8193-2f2a-4eec-9f38-4fee663e4f99",
+      "_postman_id": "8f561a49-3d23-494b-8547-5254366c4187",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
       "request": {
         "method": "GET",
         "header": [],
-        "url": "http://localhost:8080/auth/realms/kheops/.well-known/openid-configuration"
+        "url": "http://localhost:8080/auth/realms/master/.well-known/openid-configuration"
       },
       "response": []
     },
@@ -373,6 +373,38 @@
           }
         },
         "url": "{{user_loctaion}}/reset-password"
+      },
+      "response": []
+    },
+    {
+      "name": "well-known",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "ddcb929e-d97b-43a0-8d3c-d8af22b21dc1",
+            "exec": [
+              "var jsonObject = JSON.parse(responseBody);",
+              "",
+              "pm.globals.set(\"issuer\", jsonObject.issuer);",
+              "pm.globals.set(\"authorization_endpoint\", jsonObject.authorization_endpoint);",
+              "pm.globals.set(\"token_endpoint\", jsonObject.token_endpoint);",
+              "pm.globals.set(\"token_introspection_endpoint\", jsonObject.token_introspection_endpoint);",
+              "pm.globals.set(\"userinfo_endpoint\", jsonObject.userinfo_endpoint);",
+              "pm.globals.set(\"end_session_endpoint\", jsonObject.end_session_endpoint);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "fcdb8193-2f2a-4eec-9f38-4fee663e4f99",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "http://localhost:8080/auth/realms/kheops/.well-known/openid-configuration"
       },
       "response": []
     },
