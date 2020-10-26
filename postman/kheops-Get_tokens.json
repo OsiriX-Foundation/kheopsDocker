@@ -33,7 +33,68 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": "https://keycloak.kheops.online/auth/realms/travis/.well-known/openid-configuration"
+        "url": "http://localhost:8080/auth/realms/travis/.well-known/openid-configuration"
+      },
+      "response": []
+    },
+    {
+      "name": "Get keycloak admin token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "ce4d3909-6895-4a2b-b418-fc8430343f79",
+            "exec": [
+              "var jsonObject = JSON.parse(responseBody);\r",
+              "\r",
+              "pm.globals.set(\"keycloak_admin_access_token\", jsonObject.access_token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "eec01891-50d9-4d7f-9f1a-db9c9672c7f1",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "grant_type",
+              "value": "password",
+              "type": "text"
+            },
+            {
+              "key": "username",
+              "value": "admin",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "admin",
+              "type": "text"
+            },
+            {
+              "key": "client_id",
+              "value": "admin-cli",
+              "type": "text"
+            }
+          ],
+          "options": {
+            "urlencoded": {}
+          }
+        },
+        "url": "{{token_endpoint}}"
       },
       "response": []
     },
@@ -325,67 +386,6 @@
           }
         },
         "url": "{{URL}}/register"
-      },
-      "response": []
-    },
-    {
-      "name": "Get keycloak admin token",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "ce4d3909-6895-4a2b-b418-fc8430343f79",
-            "exec": [
-              "var jsonObject = JSON.parse(responseBody);\r",
-              "\r",
-              "pm.globals.set(\"keycloak_admin_access_token\", jsonObject.access_token);"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "_postman_id": "eec01891-50d9-4d7f-9f1a-db9c9672c7f1",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/x-www-form-urlencoded",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "urlencoded",
-          "urlencoded": [
-            {
-              "key": "grant_type",
-              "value": "password",
-              "type": "text"
-            },
-            {
-              "key": "username",
-              "value": "admin",
-              "type": "text"
-            },
-            {
-              "key": "password",
-              "value": "admin",
-              "type": "text"
-            },
-            {
-              "key": "client_id",
-              "value": "admin-cli",
-              "type": "text"
-            }
-          ],
-          "options": {
-            "urlencoded": {}
-          }
-        },
-        "url": ""
       },
       "response": []
     }
