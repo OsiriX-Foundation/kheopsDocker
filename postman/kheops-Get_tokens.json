@@ -635,7 +635,11 @@
           "script": {
             "id": "01ef1e50-3636-4c69-b06d-6977deb4c3e8",
             "exec": [
-              "tests[\"Status code is 200\"] = responseCode.code === 200;"
+              "tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+              "\r",
+              "var jsonObject = JSON.parse(responseBody);\r",
+              "\r",
+              "pm.globals.set(\"user2_id\", jsonObject.sub);"
             ],
             "type": "text/javascript"
           }
@@ -673,7 +677,11 @@
           "script": {
             "id": "c1133789-73de-42f4-99d0-37ae6210a7c9",
             "exec": [
-              "tests[\"Status code is 200\"] = responseCode.code === 200;"
+              "tests[\"Status code is 200\"] = responseCode.code === 200;\r",
+              "\r",
+              "var jsonObject = JSON.parse(responseBody);\r",
+              "\r",
+              "pm.globals.set(\"user3_id\", jsonObject.sub);"
             ],
             "type": "text/javascript"
           }
