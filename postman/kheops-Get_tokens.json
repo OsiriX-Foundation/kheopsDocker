@@ -149,6 +149,98 @@
       "response": []
     },
     {
+      "name": "register user in keycloak toto Copy",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "60fe71b7-6a1d-41c0-8213-b8ecb864aa77",
+            "exec": [
+              "tests[\"Status code is 201 or 409\"] = responseCode.code === 201  || responseCode.code ===  409;\r",
+              "\r",
+              "tests[\"[INFO] Response: \" + responseBody] = true;\r",
+              "\r",
+              "pm.globals.set(\"user_location\", postman.getResponseHeader(\"Location\"));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "50f310cf-f882-4478-9687-aeb27dfdcbdf",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": {
+            "token": "{{keycloak_admin_access_token}}"
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"enabled\":true, \"attributes\":{}, \"username\":\"toto\", \"emailVerified\":true,\"email\":\"toto@gmail.com\", \"firstName\":\"toto\", \"lastName\":\"toto\"}",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "http://localhost:8080/auth/admin/realms/kheops/users"
+      },
+      "response": []
+    },
+    {
+      "name": "toto set password",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "50e9038c-b56b-47a2-bda2-a3ea58c3af1e",
+            "exec": [
+              "tests[\"Status code is 204\"] = responseCode.code === 204;"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "f7cf0ff2-f282-42cd-be4a-d3ea54460a44",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": {
+            "token": "{{keycloak_admin_access_token}}"
+          }
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"type\":\"password\", \"value\":\"toto\", \"temporary\":false}",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "{{user_loctaion}}/reset-password"
+      },
+      "response": []
+    },
+    {
       "name": "get token user 1 (titi)",
       "event": [
         {
@@ -440,20 +532,24 @@
       "response": []
     },
     {
-      "name": "toto set password",
+      "name": "register user in keycloak toto Copy 2",
       "event": [
         {
           "listen": "test",
           "script": {
-            "id": "50e9038c-b56b-47a2-bda2-a3ea58c3af1e",
+            "id": "eb5ae1e7-798a-4488-a38d-1d75f4a9a1f2",
             "exec": [
-              ""
+              "tests[\"Status code is 201 or 409\"] = responseCode.code === 201  || responseCode.code ===  409;\r",
+              "\r",
+              "tests[\"[INFO] Response: \" + responseBody] = true;\r",
+              "\r",
+              "pm.globals.set(\"user_location\", postman.getResponseHeader(\"Location\"));"
             ],
             "type": "text/javascript"
           }
         }
       ],
-      "_postman_id": "f7cf0ff2-f282-42cd-be4a-d3ea54460a44",
+      "_postman_id": "5f2c706d-837e-43f1-826a-588b6863afe7",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -464,7 +560,7 @@
             "token": "{{keycloak_admin_access_token}}"
           }
         },
-        "method": "PUT",
+        "method": "POST",
         "header": [
           {
             "key": "Content-Type",
@@ -474,12 +570,12 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"type\":\"password\", \"value\":\"toto\", \"temporary\":false}",
+          "raw": "{\"enabled\":true, \"attributes\":{}, \"username\":\"toto\", \"emailVerified\":true,\"email\":\"toto@gmail.com\", \"firstName\":\"toto\", \"lastName\":\"toto\"}",
           "options": {
             "raw": {}
           }
         },
-        "url": "{{user_loctaion}}/reset-password"
+        "url": "http://localhost:8080/auth/admin/realms/kheops/users"
       },
       "response": []
     }
