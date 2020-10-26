@@ -33,7 +33,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": "http://localhost:8080/auth/realms/travis/.well-known/openid-configuration"
+        "url": "http://localhost:8080/auth/realms/kheops/.well-known/openid-configuration"
       },
       "response": []
     },
