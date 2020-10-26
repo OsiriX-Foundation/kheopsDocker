@@ -361,13 +361,13 @@
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json;charset=UTF-8",
-            "type": "text"
+            "type": "text",
+            "value": "application/json;charset=UTF-8"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"type\":\"password\", \"value\":\"toto\", \"temporary\":false}",
+          "raw": "{\"type\":\"password\", \"value\":\"tata\", \"temporary\":false}",
           "options": {
             "raw": {}
           }
