@@ -47,6 +47,8 @@
             "exec": [
               "var jsonObject = JSON.parse(responseBody);\r",
               "\r",
+              "tests[\"[INFO] Response: \" + responseBody] = true;\r",
+              "\r",
               "pm.globals.set(\"keycloak_admin_access_token\", jsonObject.access_token);"
             ],
             "type": "text/javascript"
@@ -99,14 +101,49 @@
       "response": []
     },
     {
-      "name": "register user in keycloak",
+      "name": "register user in keycloak toto",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "443bad5f-0d0a-41ad-8376-7d9017668741",
+            "exec": [
+              "tests[\"Status code is 201 or 409\"] = responseCode.code === 201  || responseCode.code ===  409;\r",
+              "\r",
+              "tests[\"[INFO] Response: \" + responseBody] = true;\r",
+              "\r",
+              "pm.globals.set(\"user_location\", postman.getResponseHeader(\"Location\"));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
       "_postman_id": "ca9c8d3a-6a81-464b-86da-6840675ff168",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
       "request": {
-        "method": "GET",
-        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": {
+            "token": "{{keycloak_admin_access_token}}"
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"enabled\":true, \"attributes\":{}, \"username\":\"toto\", \"emailVerified\":true,\"email\":\"toto@gmail.com\", \"firstName\":\"toto\", \"lastName\":\"toto\"}",
+          "options": {
+            "raw": {}
+          }
+        },
         "url": "http://localhost:8080/auth/admin/realms/kheops/users"
       },
       "response": []
@@ -399,6 +436,50 @@
           }
         },
         "url": "{{URL}}/register"
+      },
+      "response": []
+    },
+    {
+      "name": "toto set password",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "50e9038c-b56b-47a2-bda2-a3ea58c3af1e",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "f7cf0ff2-f282-42cd-be4a-d3ea54460a44",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": {
+            "token": "{{keycloak_admin_access_token}}"
+          }
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json;charset=UTF-8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"type\":\"password\", \"value\":\"toto\", \"temporary\":false}",
+          "options": {
+            "raw": {}
+          }
+        },
+        "url": "{{user_loctaion}}/reset-password"
       },
       "response": []
     }
