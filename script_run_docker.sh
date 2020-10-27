@@ -20,7 +20,7 @@ do
       old_log=${docker_logs[$i]}
       log=$(docker logs --tail 1 $dn)
 
-
+      echo $log
 
       if [ "$old_log" == "$log" ]; then 
          docker_logs[i]=$log
