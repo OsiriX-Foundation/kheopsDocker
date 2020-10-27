@@ -112,7 +112,12 @@
               "\r",
               "tests[\"[INFO] Response: \" + responseBody] = true;\r",
               "\r",
-              "pm.globals.set(\"user_location\", postman.getResponseHeader(\"Location\"));"
+              "if (responseCode.code == 201) {\r",
+              "   pm.globals.set(\"user_location\", postman.getResponseHeader(\"Location\"));\r",
+              "} else {\r",
+              "   postman.setNextRequest(\"register user in keycloak titi\")\r",
+              "}\r",
+              ""
             ],
             "type": "text/javascript"
           }
