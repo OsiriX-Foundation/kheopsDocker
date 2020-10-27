@@ -219,7 +219,12 @@
               "\r",
               "tests[\"[INFO] Response: \" + responseBody] = true;\r",
               "\r",
-              "pm.globals.set(\"user_location\", postman.getResponseHeader(\"Location\"));"
+              "if (responseCode.code == 201) {\r",
+              "   pm.globals.set(\"user_location\", postman.getResponseHeader(\"Location\"));\r",
+              "} else {\r",
+              "   postman.setNextRequest(\"register user in keycloak tata\")\r",
+              "}\r",
+              ""
             ],
             "type": "text/javascript"
           }
@@ -263,9 +268,7 @@
           "script": {
             "id": "bd0014ba-98bd-467c-a43b-105e9bb892dc",
             "exec": [
-              "if (pm.environment.get(\"do_test\")) {\r",
-              "    tests[\"Status code is 204\"] = responseCode.code === 204;\r",
-              "}"
+              "tests[\"Status code is 204\"] = responseCode.code === 204;"
             ],
             "type": "text/javascript"
           }
@@ -275,11 +278,6 @@
           "script": {
             "id": "11b5b491-cfc4-475c-9535-6a41540c2488",
             "exec": [
-              "if (pm.globals.get(\"user_location\") == null) {\r",
-              "    pm.environment.set(\"do_test\", false);\r",
-              "} else {\r",
-              "    pm.environment.set(\"do_test\", true);\r",
-              "}\r",
               ""
             ],
             "type": "text/javascript"
@@ -372,9 +370,7 @@
           "script": {
             "id": "05c6d6d4-f477-4a12-8e49-e4d13cc8203d",
             "exec": [
-              "if (pm.environment.get(\"do_test\")) {\r",
-              "    tests[\"Status code is 204\"] = responseCode.code === 204;\r",
-              "}"
+              "tests[\"Status code is 204\"] = responseCode.code === 204;"
             ],
             "type": "text/javascript"
           }
@@ -384,11 +380,7 @@
           "script": {
             "id": "470da3a6-66f8-4956-98a7-a34c51ad6d81",
             "exec": [
-              "if (pm.globals.get(\"user_location\") == null) {\r",
-              "    pm.environment.set(\"do_test\", false);\r",
-              "} else {\r",
-              "    pm.environment.set(\"do_test\", true);\r",
-              "}"
+              ""
             ],
             "type": "text/javascript"
           }
