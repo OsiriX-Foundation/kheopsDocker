@@ -4,20 +4,25 @@ cd kheops
 docker-compose down -v
 docker-compose up -d
 cd ..
-sleep 60
+
 
 docker_name "kheopsreverseproxy" "pacsauthorizationproxy" "kheopsauthorization" "pacsarc" "pacspostgres" "keycloak" "kheopsdicomwebproxy"\
             "kheopszipper" "kheopsui" "kheopspostgres" "ldap"
 
-while [true]
+docker_logs[11]
+
+while true;
 do
-   for dn in [docker_name]
+   for dn in docker_name;
    do
       echo docker logs --tail 1 $dn
    done
    break
 done
 
+
+
+sleep 60
 
 docker ps -a
 
