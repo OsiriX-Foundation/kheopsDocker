@@ -168,8 +168,7 @@
             "exec": [
               "if (pm.globals.get(\"user_location\") == null) {\r",
               "    throw new Error(\"User already exist\");\r",
-              "}\r",
-              ""
+              "}"
             ],
             "type": "text/javascript"
           }
@@ -271,7 +270,7 @@
           "script": {
             "id": "11b5b491-cfc4-475c-9535-6a41540c2488",
             "exec": [
-              "if (pm.globals.get(\"user_location\") == null {\r",
+              "if (pm.globals.get(\"user_location\") == null) {\r",
               "    throw new Error(\"User already exist\");\r",
               "}"
             ],
