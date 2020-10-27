@@ -9,7 +9,7 @@ cd ..
 docker_name=("kheopsreverseproxy" "pacsauthorizationproxy" "kheopsauthorization" "pacsarc" "pacspostgres" "keycloak" "kheopsdicomwebproxy"\
             "kheopszipper" "kheopsui" "kheopspostgres" "ldap")
 
-
+docker_logs=("" "" "" "" "" "" "" "" "" "" "")
 
 while true;
 do
@@ -18,7 +18,6 @@ do
    for dn in "${docker_name[@]}"
    do
       old_log=${docker_logs[$i]}
-      echo $old_log
       log=$(docker logs --tail 1 $dn)
 
 
@@ -44,8 +43,6 @@ do
 
    break
 done
-
-echo ${docker_logs[@]}
 
 docker ps -a
 
