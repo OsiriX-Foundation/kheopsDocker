@@ -2,13 +2,20 @@
 
 docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "SELECT * FROM albums"
 
-docker exec -it kheopspostgres pg_dump -U kheopsuser -Fs -s -f kheops.dump kheops
-
-docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "UPDATE pg_database SET datallowconn = 'false' WHERE datname = 'kheops'"
-docker exec -it kheopspostgres dropdb -U kheopsuser kheops
-docker exec -it kheopspostgres createdb -U kheopsuser kheops
-docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "UPDATE pg_database SET datallowconn = 'true' WHERE datname = 'kheops'"
-docker exec -it kheopspostgres pg_restore -U kheopsuser -v -d kheops kheops.dump
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM event_series"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM events"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM report_providers"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM album_series"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM album_user"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM webhook_trigger_series"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM webhook_attempts"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM webhook_triggers"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM webhooks"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM capabilities"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM series"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM studies"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM albums"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM users"
 
 
 docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "SELECT * FROM albums"
