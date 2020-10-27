@@ -35,6 +35,7 @@ do
 
    if [ $flag = true ];
    then
+      echo "waiting 10 secondes..."
       sleep 10
    else
     break
