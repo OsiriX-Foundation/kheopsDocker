@@ -6,16 +6,16 @@ docker-compose up -d
 cd ..
 
 
-docker_name "kheopsreverseproxy" "pacsauthorizationproxy" "kheopsauthorization" "pacsarc" "pacspostgres" "keycloak" "kheopsdicomwebproxy"\
-            "kheopszipper" "kheopsui" "kheopspostgres" "ldap"
+docker_name=("kheopsreverseproxy" "pacsauthorizationproxy" "kheopsauthorization" "pacsarc" "pacspostgres" "keycloak" "kheopsdicomwebproxy"\
+            "kheopszipper" "kheopsui" "kheopspostgres" "ldap")
 
-docker_logs[11]
+#docker_logs[11]
 
 while true;
 do
-   for dn in docker_name;
+   for dn in "${docker_name[@]}"
    do
-      echo docker logs --tail 1 $dn
+      docker logs --tail 1 $dn
    done
    break
 done
