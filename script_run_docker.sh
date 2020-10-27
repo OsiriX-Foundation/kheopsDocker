@@ -40,9 +40,6 @@ do
    else
     break
    fi
-   
-
-   break
 done
 
 docker ps -a
