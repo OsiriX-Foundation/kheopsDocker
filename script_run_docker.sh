@@ -16,13 +16,16 @@ do
    flag=false
    for dn in "${docker_name[@]}"
    do
+      echo "AAAA"
       old_log=${docker_logs[$i]}
+      echo "BBBB"
       log=$(docker logs --tail 1 $dn)
+      echo "CCC"
 
       if [ "$old_log" != "$log" ]; then 
          flag=true
       fi
-      
+
       docker_logs[i]=$log
       i=$((i+1))
    done
