@@ -377,9 +377,7 @@
             "exec": [
               "if (pm.globals.get(\"user_location\") == \"\") {\r",
               "    throw new Error(\"User already exist\");\r",
-              "}\r",
-              "\r",
-              ""
+              "}"
             ],
             "type": "text/javascript"
           }
