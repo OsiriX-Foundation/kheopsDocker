@@ -1,5 +1,5 @@
 #!/bin/bash
 
-psql -Ukheopsuser -W mypwd -d kheops -c "SELECT * FROM albums"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "SELECT * FROM albums"
 
 
