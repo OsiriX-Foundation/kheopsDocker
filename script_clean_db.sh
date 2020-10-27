@@ -14,3 +14,5 @@ docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM series"
 docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM studies"
 docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM users"
 docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM albums"
+
+node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json
