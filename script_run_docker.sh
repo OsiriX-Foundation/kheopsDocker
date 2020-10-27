@@ -19,13 +19,11 @@ do
       old_log=${docker_logs[$i]}
       log=$(docker logs --tail 1 $dn)
 
-      if [ "$old_log" == "$log" ]; then 
-         docker_logs[i]=$log
-      else
-         docker_logs[i]=$log
+      if [ "$old_log" != "$log" ]; then 
          flag=true
       fi
-
+      
+      docker_logs[i]=$log
       i=$((i+1))
    done
 
