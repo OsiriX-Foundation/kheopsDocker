@@ -375,6 +375,8 @@
           "script": {
             "id": "470da3a6-66f8-4956-98a7-a34c51ad6d81",
             "exec": [
+              "tests[\"[INFO] : \" + pm.globals.get(\"user_location\")] = true;\r",
+              "\r",
               "if (pm.globals.get(\"user_location\") == \"\") {\r",
               "    throw new Error(\"User already exist\");\r",
               "}"
