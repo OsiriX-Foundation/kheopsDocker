@@ -260,7 +260,9 @@
           "script": {
             "id": "bd0014ba-98bd-467c-a43b-105e9bb892dc",
             "exec": [
-              "tests[\"Status code is 204\"] = responseCode.code === 204;"
+              "if (pm.environment.sgett(\"do test\")) {\r",
+              "    tests[\"Status code is 204\"] = responseCode.code === 204;\r",
+              "}"
             ],
             "type": "text/javascript"
           }
@@ -271,7 +273,9 @@
             "id": "11b5b491-cfc4-475c-9535-6a41540c2488",
             "exec": [
               "if (pm.globals.get(\"user_location\") == null) {\r",
-              "    throw new Error(\"User already exist\");\r",
+              "    pm.environment.set(\"do test\", false);\r",
+              "} else {\r",
+              "    pm.environment.set(\"do test\", true);\r",
               "}"
             ],
             "type": "text/javascript"
