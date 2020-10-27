@@ -161,9 +161,7 @@
           "script": {
             "id": "50e9038c-b56b-47a2-bda2-a3ea58c3af1e",
             "exec": [
-              "if (pm.environment.get(\"do_test\")) {\r",
-              "    tests[\"Status code is 204\"] = responseCode.code === 204;\r",
-              "}"
+              "tests[\"Status code is 204\"] = responseCode.code === 204;"
             ],
             "type": "text/javascript"
           }
@@ -173,11 +171,7 @@
           "script": {
             "id": "2f61ead5-968a-4e93-bb15-86b07df02493",
             "exec": [
-              "if (pm.globals.get(\"user_location\") == null) {\r",
-              "    pm.environment.set(\"do_test\", false);\r",
-              "} else {\r",
-              "    pm.environment.set(\"do_test\", true);\r",
-              "}"
+              ""
             ],
             "type": "text/javascript"
           }
