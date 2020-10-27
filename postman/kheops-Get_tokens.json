@@ -166,7 +166,7 @@
           "script": {
             "id": "2f61ead5-968a-4e93-bb15-86b07df02493",
             "exec": [
-              "if (pm.globals.get(\"user_location\") == \"\") {\r",
+              "if (pm.globals.get(\"user_location\") == null) {\r",
               "    throw new Error(\"User already exist\");\r",
               "}\r",
               ""
