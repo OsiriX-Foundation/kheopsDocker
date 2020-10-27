@@ -377,7 +377,7 @@
             "exec": [
               "tests[\"[INFO] : \" + pm.globals.get(\"user_location\")] = true;\r",
               "\r",
-              "if (pm.globals.get(\"user_location\") == \"\") {\r",
+              "if (pm.globals.get(\"user_location\") == null) {\r",
               "    throw new Error(\"User already exist\");\r",
               "}"
             ],
