@@ -9,20 +9,43 @@ cd ..
 docker_name=("kheopsreverseproxy" "pacsauthorizationproxy" "kheopsauthorization" "pacsarc" "pacspostgres" "keycloak" "kheopsdicomwebproxy"\
             "kheopszipper" "kheopsui" "kheopspostgres" "ldap")
 
-#docker_logs[11]
+
 
 while true;
 do
+   i=0
+   flag=false
    for dn in "${docker_name[@]}"
    do
-      docker logs --tail 1 $dn
+      old_log=${docker_logs[$i]}
+      echo $old_log
+      log=$(docker logs --tail 1 $dn)
+
+
+
+      if [ "$old_log" == "$log" ]; then 
+         docker_logs[i]=$log
+      else
+         docker_logs[i]=$log
+         flag=true
+      fi
+
+
+      i=$((i+1))
    done
+
+   if [ $flag = true ];
+   then
+      sleep 10
+   else
+    break
+   fi
+   
+
    break
 done
 
-
-
-sleep 60
+echo ${docker_logs[@]}
 
 docker ps -a
 
