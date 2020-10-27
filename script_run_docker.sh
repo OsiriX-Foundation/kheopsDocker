@@ -5,7 +5,6 @@ docker-compose down -v
 docker-compose up -d
 cd ..
 
-
 docker_name=("kheopsreverseproxy" "pacsauthorizationproxy" "kheopsauthorization" "pacsarc" "pacspostgres" "keycloak" "kheopsdicomwebproxy"\
             "kheopszipper" "kheopsui" "kheopspostgres" "ldap")
 
@@ -20,15 +19,12 @@ do
       old_log=${docker_logs[$i]}
       log=$(docker logs --tail 1 $dn)
 
-      echo $log
-
       if [ "$old_log" == "$log" ]; then 
          docker_logs[i]=$log
       else
          docker_logs[i]=$log
          flag=true
       fi
-
 
       i=$((i+1))
    done
