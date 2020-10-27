@@ -14,8 +14,9 @@ docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM webhooks
 docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM capabilities"
 docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM series"
 docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM studies"
-docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM albums"
 docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM users"
+docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "DELETE FROM albums"
+
 
 
 docker exec -it kheopspostgres psql -Ukheopsuser kheops -c "SELECT * FROM albums"
