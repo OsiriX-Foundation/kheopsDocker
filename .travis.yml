@@ -16,8 +16,6 @@ before_install:
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
-  - chmod +x script_clean_db.sh
-  - chmod +x script_wait_docker_start.sh
   - sudo mv docker-compose /usr/local/bin
 
 install:
