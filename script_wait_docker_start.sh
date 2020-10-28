@@ -13,7 +13,7 @@ do
    for dn in "${docker_name[@]}"
    do
       old_log=${docker_logs[$i]}
-      log=$(docker logs --tail 1 $dn)
+      log=$(docker logs --tail 1 $dn > /dev/null)
 
       if [ "$old_log" != "$log" ]; then 
          flag=true
