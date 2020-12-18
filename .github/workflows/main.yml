@@ -36,5 +36,6 @@ jobs:
           collection: postman/kheops-DICOMweb_Capability_Tokens.json
           environment: postman/kheops_localhost.postman_environment.json
           globals: postman/Workspace.postman_globals.json
+          export-globals: postman/Workspace.postman_globals.json
         
 
