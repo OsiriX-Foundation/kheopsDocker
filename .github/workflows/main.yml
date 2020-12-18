@@ -29,6 +29,7 @@ jobs:
           collection: postman/kheops-Get_tokens.json
           environment: postman/kheops_localhost.postman_environment.json
           globals: postman/Workspace.postman_globals.json
+          export-globals: postman/Workspace.postman_globals.json
 
       - name: test1
         uses: matt-ball/newman-action@v0.2.3
@@ -36,6 +37,5 @@ jobs:
           collection: postman/kheops-DICOMweb_Capability_Tokens.json
           environment: postman/kheops_localhost.postman_environment.json
           globals: postman/Workspace.postman_globals.json
-          export-globals: postman/Workspace.postman_globals.json
         
 
