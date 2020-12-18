@@ -14,14 +14,22 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run1
         run: chmod +x script_run_docker.sh
-      - name: Run1.1
-        run: chmod +x script_register_users.sh
       - name: Run2
         run: ./script_run_docker.sh
-      - name: Run3
-        run: ./script_register_users.sh
+      - name: Run1.1
+        run: chmod +x script_edit_postman_json.sh
+      - name: Run2.1
+        run: ./script_edit_postman_json.sh
+
       
       
+      - name: register user
+        uses: matt-ball/newman-action@v0.2.3
+        with:
+          collection: postman/kheops-Get_tokens.json
+          environment: postman/kheops_localhost.postman_environment.json
+          globals: postman/Workspace.postman_globals.json
+
       - name: test1
         uses: matt-ball/newman-action@v0.2.3
         with:
