@@ -2,7 +2,6 @@ name: CI Test
 
 on:
   push:
-    branches: [ master ]
     
 jobs:
   build:
@@ -30,3 +29,4 @@ jobs:
           environment: postman/kheops_localhost.postman_environment.json
           globals: postman/Workspace.postman_globals.json
         
+
