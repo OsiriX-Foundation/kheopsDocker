@@ -1,0 +1,32 @@
+name: CI Test
+
+on:
+  push:
+    branches: [ master ]
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # Runs a set of commands using the runners shell
+      - name: Run1
+        run: chmod +x script_run_docker.sh
+      - name: Run1.1
+        run: chmod +x script_register_users.sh
+      - name: Run2
+        run: ./script_run_docker.sh
+      - name: Run3
+        run: ./script_register_users.sh
+      
+      
+      - name: test1
+        uses: matt-ball/newman-action@v0.2.3
+        with:
+          collection: postman/kheops-DICOMweb_Capability_Tokens.json
+          environment: postman/kheops_localhost.postman_environment.json
+          globals: postman/Workspace.postman_globals.json
+        
