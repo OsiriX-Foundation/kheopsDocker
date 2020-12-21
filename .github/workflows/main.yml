@@ -1,7 +1,10 @@
 name: CI Test
 
 on:
+  schedule:
+    - cron: '50 15 * * *'
   push:
+  
     
 jobs:
   build:
