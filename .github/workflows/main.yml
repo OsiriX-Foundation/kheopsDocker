@@ -24,13 +24,14 @@ jobs:
       
       
       - name: register user
-        uses: matt-ball/newman-action@v0.2.3
+        #uses: matt-ball/newman-action@v0.2.3
+        uses: gerome12/testnewman@v1
         with:
           collection: postman/kheops-Get_tokens.json
           environment: postman/kheops_localhost.postman_environment.json
           globals: postman/Workspace.postman_globals.json
-          #export-globals: postman/Workspace.postman_globals.json
-          export-environment : postman/Workspace.postman_globals.json
+          export-globals: postman/Workspace.postman_globals.json
+          #export-environment : postman/Workspace.postman_globals.json
 
       - name: test1
         uses: matt-ball/newman-action@v0.2.3
