@@ -12,27 +12,64 @@ jobs:
           fetch-depth: 0
 
       # Runs a set of commands using the runners shell
-      - name: Run1
+      - name: Start docker and init Newman files
         run: |
           chmod +x script_run_docker.sh
           ./script_run_docker.sh
           chmod +x script_edit_postman_json.sh
           ./script_edit_postman_json.sh
-     # - name: Run2
-     #   run: ./script_run_docker.sh
-     # - name: Run1.1
-     #   run: c
-     # - name: Run2.1
-     #   run: ./script_edit_postman_json.sh
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.4
         
-      - name: install newman
+      - name: install Newman
         run: npm install newman@3.10.0
         
-      - name: register user
-        run: node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json
+      - name: execute test
+        run: |
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json
+          ./script_run_docker.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json
+          node_modules/.bin/newman run postman/kheops-DICOMweb_Capability_Tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json   
+          node_modules/.bin/newman run postman/kheops-Inbox.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json  
+          node_modules/.bin/newman run postman/kheops-Album.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json   
+          node_modules/.bin/newman run postman/kheops-Study_comments.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json   
+          node_modules/.bin/newman run postman/kheops_Capabilities_tokens_Delete.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json  
+          node_modules/.bin/newman run postman/kheops-Study_List-withOptions.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json  
+          node_modules/.bin/newman run postman/kheops-Introspect.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json   
+          node_modules/.bin/newman run postman/kheops-Viewer_token.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json  
+          node_modules/.bin/newman run postman/kheops-series_favorite.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json  
+          node_modules/.bin/newman run postman/kheops-Capabilities_tokens_albums.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json   
+          node_modules/.bin/newman run postman/kheops-DICOMweb_proxy.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json  
+          node_modules/.bin/newman run postman/kheops-Study_List.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json  
+          node_modules/.bin/newman run postman/kheops-proxy_pacs.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
+          ./script_clean_db.sh
+          node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json
+          node_modules/.bin/newman run postman/kheops-Zipper.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
       
       #- name: register user
       #  uses: matt-ball/newman-action@v0.2.3
