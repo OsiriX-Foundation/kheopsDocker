@@ -24,7 +24,7 @@ jobs:
         run: cat postman/Workspace.postman_globals.json
 
       - name: register user
-        uses: gerome12/newman-action@v1
+        uses: gerome12/newman-action@v2
         with:
           collection: postman/kheops-Get_tokens.json
           environment: postman/kheops_localhost.postman_environment.json
