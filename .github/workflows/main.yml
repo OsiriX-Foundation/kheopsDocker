@@ -66,7 +66,7 @@ jobs:
           node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json   
           node_modules/.bin/newman run postman/kheops-Viewer_token.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
           ./script_clean_db.sh
-      - name: test 
+      - name: test series_favorite
         run: |
           node_modules/.bin/newman run postman/kheops-Get_tokens.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json --export-globals postman/Workspace.postman_globals.json  
           node_modules/.bin/newman run postman/kheops-series_favorite.json -e postman/kheops_localhost.postman_environment.json -g postman/Workspace.postman_globals.json
