@@ -19,7 +19,9 @@ jobs:
           chmod +x script_clean_db.sh
           ./script_run_docker.sh
           ./script_edit_postman_json.sh
-
+          
+      - name: test 1
+        run: cat postman/Workspace.postman_globals.json
 
       - name: register user
         uses: gerome12/newman-action@v1
@@ -29,6 +31,9 @@ jobs:
           globals: postman/Workspace.postman_globals.json
           export-globals: postman/Workspace.postman_globals.json
 
+      - name: test 2
+        run: cat postman/Workspace.postman_globals.json
+        
       #- name: test1
       #  uses: matt-ball/newman-action@v0.2.3
       #  with:
