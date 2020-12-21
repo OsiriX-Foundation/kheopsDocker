@@ -24,12 +24,12 @@ jobs:
         run: cat postman/Workspace.postman_globals.json
 
       - name: register user
-        uses: gerome12/newman-action@v3
+        uses: gerome12/newman-action@v1
         with:
           collection: postman/kheops-Get_tokens.json
           environment: postman/kheops_localhost.postman_environment.json
           globals: postman/Workspace.postman_globals.json
-          export-globals: toto.json
+          export-environment: toto.json
 
       - name: test 2
         run: cat toto.json
