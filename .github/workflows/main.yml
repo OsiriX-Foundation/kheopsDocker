@@ -2,7 +2,7 @@ name: CI Test
 
 on:
   schedule:
-    - cron: '0 16 * * *'
+    - cron: '0 22 * * 1-5'
   push:
   
     
