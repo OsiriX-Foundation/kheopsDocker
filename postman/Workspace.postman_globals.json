@@ -60,11 +60,6 @@
       "enabled": true
     },
     {
-      "key": "JWT_notAllAccess",
-      "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZXRlIiwiaWF0IjoxNDMwNjc3NjYzLCJuYW1lIjoiYm9iIiwic2VyaWVzX3VpZCI6IjEuMy4xMi4yLjExMDcuNS4xLjQuNDg1NDUuMzAwMDAwMDYxMDAzMDc0NzA2MzQzMDAwMDQ2OTMiLCJzdHVkeV91aWQiOiIyLjE2Ljg0MC4xLjExMzY2OS42MzIuMjAuMTIxMS4xMDAwMDMxNDIyMyIsImV4cCI6MTY1NzgyNTk3NH0.IaFCP1PK2yTD7BSHCg_woVKI2zJFf0pjGLakcOteO3Y",
-      "enabled": true
-    },
-    {
       "key": "JWT_expired",
       "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZXRlIiwiaWF0IjoxNDMwNjc3NjYzLCJuYW1lIjoiYm9iIiwic2VyaWVzX3VpZCI6IjEuMy4xMi4yLjExMDcuNS4xLjQuNDg1NDUuMzAwMDAwMDYxMDAzMDc0NzA2MzQzMDAwMDQ2OTMiLCJzdHVkeV91aWQiOiIyLjE2Ljg0MC4xLjExMzY2OS42MzIuMjAuMTIxMS4xMDAwMDMxNDIyMyIsImV4cCI6MTQ1NzgyNTk3NH0.7slP7cyxxFrjNR5iMoFIuYX5m1n016IMtHHbAWl_9Ns",
       "enabled": true
