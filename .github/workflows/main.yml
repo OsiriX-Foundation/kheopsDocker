@@ -22,7 +22,6 @@ jobs:
           chmod +x script_clean_db.sh
           ./script_run_docker.sh
           ./script_edit_postman_json.sh
-          docker logs kheopsreverseproxy
           
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.4
