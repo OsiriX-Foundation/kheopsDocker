@@ -1,6 +1,6 @@
 # kheopsDocker
 
-Utiliser pour Travis-ci ou pour tourner en local
+Utiliser pour GitHub Action ou pour tourner en local
 
 Branche de référence pour les tests 
 
