@@ -62,7 +62,7 @@ services:
       - arcdb
     volumes:
       - dcm4chee-arc-wildfly:/opt/wildfly/standalone
-      - /dcm4chee-arc/storage:/storage
+      - dcm4chee-arc-data:/storage
     restart: on-failure
     networks:
       - pacs_network
@@ -129,7 +129,6 @@ services:
     container_name: kheopsreverseproxy
     image: osirixfoundation/kheops-reverse-proxy:${KHEOPS_REVERSE_PROXY_IMAGE_TAG}
     volumes:
-      - logs_proxy:/usr/local/tomcat/logs
       - letsencrypt:/etc/letsencrypt
     secrets:
       - privkey1.pem
@@ -204,6 +203,7 @@ secrets:
     file: ${SECRETS_PATH}/welcomebot_token
 
 volumes:
+  dcm4chee-arc-data:
   dcm4chee-ldap-ldap:
   dcm4chee-ldap-slapdd:
   dcm4chee-db-data:
