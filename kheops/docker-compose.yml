@@ -112,7 +112,6 @@ services:
       - logs_auth:/kheops/authorization/logs
       - logs_pep:/kheops/pep/logs
       - logs_reverse_proxy:/kheops/reverseproxy/logs
-      - filebeat_data:/data/registry/filebeat
     networks:
       - kheops_beat_network
 
@@ -260,7 +259,6 @@ volumes:
   logs_auth:
   logs_proxy:
   letsencrypt:
-  filebeat_data:
   logs_pep:
   logs_reverse_proxy:
   logs_auth:
