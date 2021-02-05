@@ -16,14 +16,9 @@ services:
   db:
     container_name: db
     image: osirixfoundation/kheops-database:${KHEOPS_DATABASE_IMAGE_TAG}
-#    image: osirixfoundation/kheops-database:v0.9.1
     volumes:
       - kheops-db-data:/var/lib/postgresql/data
     env_file: docker-compose.env
-#    environment:
-#      - KHEOPS_AUTHDB_USER=kheopsuser
-#      - KHEOPS_AUTHDB_NAME=kheops
-#      - KHEOPS_AUTHDB_PASSWORD_FILE=/run/secrets/kheops_authdb_pass
     secrets:
       - kheops_authdb_pass
       - kheops_pacsdb_pass
@@ -70,9 +65,13 @@ services:
   kheops-authorization:
     container_name: kheopsauthorization
     image: osirixfoundation/kheops-authorization:${KHEOPS_AUTHORIZATION_IMAGE_TAG}
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
     volumes:
       - logs_auth:/usr/local/tomcat/logs
-      - filebeat_registry_auth:/var/lib/filebeat/registry/filebeat
     restart: on-failure
     env_file: docker-compose.env
     environment:
@@ -90,10 +89,41 @@ services:
       - "reportprovider.kheops.online:10.5.5.33"
     networks:
       - kheops_network
+      - kheops_beat_network
+  
+  kheops-authorization-metricbeat:
+    container_name: kheopsauthorizationmetricbeat
+    image: osirixfoundation/kheops-authorization-metricbeat:${KHEOPS_METRICBEAT_SIDECAR_TAG}
+    env_file: docker-compose.env
+    depends_on:
+      - kheops-authorization
+    networks:
+      - kheops_beat_network
+      
+  kheops-filebeat-sidecar:
+    container_name: kheopsfilebeatsidecar
+    image: osirixfoundation/kheops-filebeat-sidecar:${KHEOPS_FILEBEAT_SIDECAR_TAG}
+    env_file: docker-compose.env
+    depends_on:
+      - kheops-authorization
+      - kheops-reverse-proxy
+      - pacs-authorization-proxy
+    volumes:
+      - logs_auth:/kheops/authorization/logs
+      - logs_pep:/kheops/pep/logs
+      - logs_reverse_proxy:/kheops/reverseproxy/logs
+      - filebeat_data:/data/registry/filebeat
+    networks:
+      - kheops_beat_network
 
   kheops-zipper:
     container_name: kheopszipper
     image: osirixfoundation/kheops-zipper:${KHEOPS_ZIPPER_IMAGE_TAG}
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
     restart: on-failure
     env_file: docker-compose.env
     depends_on:
@@ -114,6 +144,11 @@ services:
   kheops-dicomweb-proxy:
     container_name: kheopsdicomwebproxy
     image: osirixfoundation/kheops-dicomweb-proxy:${KHEOPS_DICOMWEB_PROXY_IMAGE_TAG}
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
     restart: on-failure
     env_file: docker-compose.env
     depends_on:
@@ -130,6 +165,12 @@ services:
     image: osirixfoundation/kheops-reverse-proxy:${KHEOPS_REVERSE_PROXY_IMAGE_TAG}
     volumes:
       - letsencrypt:/etc/letsencrypt
+      - logs_reverse_proxy:/var/log/nginx
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
     secrets:
       - privkey1.pem
       - fullchain1.pem
@@ -154,6 +195,13 @@ services:
     container_name: pacsauthorizationproxy
     env_file: docker-compose.env
     image: osirixfoundation/pacs-authorization-proxy:${PACS_AUTHORIZATION_PROXY_IMAGE_TAG}
+    volumes:
+      - logs_pep:/var/log/nginx
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
     depends_on:
       - arc
     secrets:
@@ -212,7 +260,10 @@ volumes:
   logs_auth:
   logs_proxy:
   letsencrypt:
-  filebeat_registry_auth:
+  filebeat_data:
+  logs_pep:
+  logs_reverse_proxy:
+  logs_auth:
   
 networks:
   kheops_network:
@@ -233,3 +284,9 @@ networks:
       driver: default
       config:
         - subnet: "172.16.243.0/24"
+  kheops_beat_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.244.0/24"
