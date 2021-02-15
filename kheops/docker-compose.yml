@@ -175,6 +175,7 @@ services:
     networks:
       - kheops_network
       - frontend_network
+      - kheops_reverseproxy_network
     extra_hosts:
       - "lavim.unige.ch:127.0.0.1"
 
@@ -259,3 +260,9 @@ networks:
       driver: default
       config:
         - subnet: "172.16.103.0/24"
+  kheops_reverseproxy_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.104.0/24"
