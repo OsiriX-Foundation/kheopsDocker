@@ -61,7 +61,6 @@ services:
       - kheops_authdb_pass
       - kheops_client_dicomwebproxysecret
       - kheops_client_zippersecret
-      - kheops_metric_ressource_password
     networks:
       - kheops_network
       - kheops_beat_network
