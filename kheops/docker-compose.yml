@@ -2,7 +2,7 @@ version: '3.7'
 
 x-environment:
   - &oidc-provider KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/irdbb
-  - &root-url KHEOPS_ROOT_URL=https:///medirad-staging.kheops.online
+  - &root-url KHEOPS_ROOT_URL=https://medirad-staging.kheops.online
 
 services:
 # DCM4CHEE uses the an LDAP server for configuration, as per the DICOM 
