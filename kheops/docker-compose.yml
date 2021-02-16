@@ -196,6 +196,9 @@ services:
         max-size: "10m"
     container_name: kheopsreverseproxy
     env_file: docker-compose.env
+    environment:
+      - *root-url
+      - *oidc-provider
     volumes:
       - logs_reverse_proxy:/var/log/nginx
     depends_on:
