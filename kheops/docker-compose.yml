@@ -55,9 +55,6 @@ services:
       - KHEOPS_AUTHDB_USER=${INSTANCE_NAME:?err}_authorization
       - KHEOPS_AUTHDB_NAME=${INSTANCE_NAME:?err}_authorization
       - KHEOPS_AUTHDB_URL=postgresql://10.5.6.2:5432
-      - KHEOPS_AUTHORIZATION_ENABLE_ELASTIC=true
-      - KHEOPS_AUTHORIZATION_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
-      - KHEOPS_AUTHORIZATION_LOGSTASH_URL=kibana.kheops.online:5044
       - KHEOPS_WELCOMEBOT_WEBHOOK=http://welcomebot:8080/share
       - CATALINA_OPTS="-Duser.timezone=UTC"
     secrets:
@@ -177,6 +174,7 @@ services:
     networks:
       - kheops_network
       - frontend_network
+      - reverseproxy_network
     extra_hosts:
       - "${INSTANCE_NAME:?err}.kheops.online:127.0.0.1"
 
@@ -199,8 +197,6 @@ services:
     networks:
       - kheops_network
       - pacs_network
-    extra_hosts:
-      - "kibana.kheops.online:10.5.7.13"
 
   irdbb-import:
     container_name: irdbbimport
@@ -268,7 +264,7 @@ networks:
       driver: default
       config:
         - subnet: "172.16.102.0/24"
-  kheops_beat_network:
+  reverseproxy_network:
     driver: bridge
     ipam:
       driver: default
@@ -280,3 +276,9 @@ networks:
       driver: default
       config:
         - subnet: "172.16.104.0/24"
+  kheops_beat_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.105.0/24"
