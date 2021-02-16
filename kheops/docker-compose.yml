@@ -86,7 +86,7 @@ services:
       - KHEOPS_WELCOMEBOT_WEBHOOK
       - KHEOPS_AUTHDB_USER=kheopsuser
       - KHEOPS_AUTHDB_NAME=kheops
-      - KHEOPS_AUTHDB_URL=postgresql://10.5.6.2:5432
+      - KHEOPS_AUTHDB_URL=postgresql://kheopspostgres:5432
       - CATALINA_OPTS="-Duser.timezone=UTC"
     depends_on:
       - kheops-postgres
