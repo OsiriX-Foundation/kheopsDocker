@@ -165,6 +165,7 @@ services:
       - KHEOPS_UI_USER_MANAGEMENT_URL=https://keycloak.kheops.online/auth/realms/irdbb/account
       - KHEOPS_VIEWER_URL=https://ohif.kheops.online
       - KHEOPS_VIEWER_SM_URL=https://reportprovider.kheops.online/wsi-viewer
+      - KHEOPS_DISABLE_UI_UPLOAD=true
     networks:
       - frontend_network
 
@@ -231,6 +232,8 @@ services:
     container_name: irdbbimport
     image: osirixfoundation/irdbb-import:v1.0.1
     env_file: docker-compose.env
+    environment:
+     - IRDBB_TOKEN=VMUbU6gEkG
     restart: on-failure
     networks:
       - kheops_network
