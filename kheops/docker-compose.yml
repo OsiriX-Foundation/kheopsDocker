@@ -256,8 +256,6 @@ volumes:
   dcm4chee-db-data:
   dcm4chee-arc-wildfly:
   kheops-db-data:
-  logs_auth:
-  logs_proxy:
   letsencrypt:
   logs_pep:
   logs_reverse_proxy:
