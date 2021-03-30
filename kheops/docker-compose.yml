@@ -163,20 +163,15 @@ services:
     container_name: kheopsreverseproxy
     image: osirixfoundation/kheops-reverse-proxy:${KHEOPS_REVERSE_PROXY_IMAGE_TAG}
     volumes:
-      - letsencrypt:/etc/letsencrypt
       - logs_reverse_proxy:/var/log/nginx
     logging:
       driver: json-file
       options:
         max-file: "10"
         max-size: "10m"
-    secrets:
-      - privkey1.pem
-      - fullchain1.pem
     env_file: docker-compose.env
     ports:
-      - "80:80"
-      - "443:443"
+      - "8081:8042"
     depends_on:
       - kheops-authorization
       - kheops-dicomweb-proxy
@@ -258,7 +253,6 @@ volumes:
   kheops-db-data:
   logs_auth:
   logs_proxy:
-  letsencrypt:
   logs_pep:
   logs_reverse_proxy:
   logs_auth:
