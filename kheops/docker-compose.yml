@@ -150,14 +150,13 @@ services:
       - kheops_network
 
   kheops-reverse-proxy:
-    image: osirixfoundation/kheops-reverse-proxy:v0.9.6-letsencrypt
+    image: osirixfoundation/kheops-reverse-proxy:main-insecured
     container_name: kheopsreverseproxy
     environment:
       - *root-url
       - *oidc-provider
     env_file: docker-compose.env
     volumes:
-      - letsencrypt:/etc/letsencrypt
       - logs_reverse_proxy:/var/log/nginx
     logging:
       driver: json-file
@@ -165,8 +164,7 @@ services:
         max-file: "10"
         max-size: "10m"
     ports:
-      - "80:80"
-      - "443:443"
+      - "8081:8042"
     depends_on:
       - kheops-authorization
       - kheops-dicomweb-proxy
@@ -216,7 +214,6 @@ volumes:
   dcm4chee-ldap-ldap:
   dcm4chee-ldap-slapdd:
   dcm4chee-arc-standalone:
-  letsencrypt:
   logs_pep:
   logs_reverse_proxy:
   logs_auth:
