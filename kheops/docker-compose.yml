@@ -150,7 +150,7 @@ services:
       - kheops_network
 
   kheops-reverse-proxy:
-    image: osirixfoundation/kheops-reverse-proxy:main-insecured
+    image: osirixfoundation/kheops-reverse-proxy:main-insecure
     container_name: kheopsreverseproxy
     environment:
       - *root-url
