@@ -86,7 +86,7 @@ services:
       - kheops_client_zippersecret
     extra_hosts:
       - "keycloak.kheops.online:10.5.5.29"
-      - "reportprovider.kheops.online:10.5.5.33"
+      - "reportprovider.kheops.online:10.5.5.30"
     networks:
       - kheops_network
       - kheops_beat_network
