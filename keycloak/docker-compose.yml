@@ -1,14 +1,5 @@
 version: "3.1"
 services:
-  postgres:
-    image: postgres:${POSTGRES_TAG}
-    container_name: keycloak-psql
-    env_file: docker-compose.env
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    secrets:
-      - psql_password
-
   nginx:
     image: osirixfoundation/kheops-keycloak-nginx:${KHEOPS_KEYCLOAK_NGINX}
     container_name: keycloak-nginx
@@ -18,15 +9,12 @@ services:
     volumes:
       - letsencrypt:/etc/letsencrypt
     depends_on:
-      - postgres
       - keycloak
 
   keycloak:
     image: jboss/keycloak:${KEYCLOAK_TAG}
     container_name: keycloak
     env_file: docker-compose.env
-    depends_on:
-      - postgres
     volumes:
       - keycloak-standalone:/opt/keycloak/standalone
       - ./themes/kheops:/opt/jboss/keycloak/themes/kheops:ro
@@ -48,7 +36,6 @@ secrets:
 
 volumes:
   keycloak-standalone:
-  postgres_data:
   letsencrypt:
 
 networks:
