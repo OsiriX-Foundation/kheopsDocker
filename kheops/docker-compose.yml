@@ -76,6 +76,9 @@ services:
     env_file: docker-compose.env
     environment:
       - CATALINA_OPTS="-Duser.timezone=UTC"
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8089 -Xms64m -Xmx1024m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m
+ #   ports:
+ #     - "8089:8089"
     depends_on:
       - db
       - arc
@@ -85,8 +88,8 @@ services:
       - kheops_client_dicomwebproxysecret
       - kheops_client_zippersecret
     extra_hosts:
-      - "keycloak.kheops.online:10.5.5.29"
-      - "reportprovider.kheops.online:10.5.5.30"
+      - "keycloak.kheops.online:10.5.7.29"
+      - "reportprovider.kheops.online:10.5.7.30"
     networks:
       - kheops_network
       - kheops_beat_network
@@ -112,6 +115,7 @@ services:
       - logs_auth:/kheops/authorization/logs
       - logs_pep:/kheops/pep/logs
       - logs_reverse_proxy:/kheops/reverseproxy/logs
+      - filebeat_registry:/registry
     networks:
       - kheops_beat_network
 
@@ -254,6 +258,7 @@ volumes:
   logs_pep:
   logs_reverse_proxy:
   logs_auth:
+  filebeat_registry:
   
 networks:
   kheops_network:
