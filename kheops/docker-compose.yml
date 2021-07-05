@@ -66,8 +66,8 @@ services:
       - kheops_network
       - kheops_beat_network
     extra_hosts:
-      - "keycloak.kheops.online:10.5.5.29"
-      - "reportprovider.kheops.online:10.5.5.33"
+      - "keycloak.kheops.online:10.5.7.29"
+      - "reportprovider.kheops.online:10.5.7.33"
 
   kheops-authorization-metricbeat:
     container_name: kheopsauthorizationmetricbeat
