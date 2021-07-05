@@ -87,14 +87,11 @@ services:
       - KHEOPS_INSTANCES=${INSTANCE_NAME:?err}
       - KHEOPS_LOGSTASH_URL=10.5.7.13:5044
     env_file: docker-compose.env
-    depends_on:
-      - kheops-authorization
-      - kheops-reverse-proxy
-      - pacs-authorization-proxy
     volumes:
       - logs_auth:/kheops/authorization/logs
       - logs_pep:/kheops/pep/logs
       - logs_reverse_proxy:/kheops/reverseproxy/logs
+      - filebeat_registry:/registry
     networks:
       - kheops_beat_network
 
@@ -218,6 +215,7 @@ volumes:
   logs_pep:
   logs_reverse_proxy:
   logs_auth:
+  filebeat_registry:
 
 networks:
   kheops_network:
