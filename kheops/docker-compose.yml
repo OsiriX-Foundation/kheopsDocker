@@ -39,7 +39,7 @@ services:
 
   kheops-authorization:
     container_name: kheopsauthorization
-    image: osirixfoundation/kheops-authorization:v0.9.6
+    image: osirixfoundation/kheops-authorization:v1.0.0
     logging:
       driver: json-file
       options:
@@ -70,7 +70,7 @@ services:
 
   kheops-authorization-metricbeat:
     container_name: kheopsauthorizationmetricbeat
-    image: osirixfoundation/kheops-authorization-metricbeat:v0.9.6
+    image: osirixfoundation/kheops-authorization-metricbeat:v1.0.0
     env_file: docker-compose.env
     environment:
       - KHEOPS_INSTANCES=${INSTANCE_NAME:?err}
@@ -82,7 +82,7 @@ services:
       
   kheops-filebeat-sidecar:
     container_name: kheopsfilebeatsidecar
-    image: osirixfoundation/kheops-filebeat-sidecar:v0.9.6
+    image: osirixfoundation/kheops-filebeat-sidecar:v1.0.0
     environment:
       - KHEOPS_INSTANCES=${INSTANCE_NAME:?err}
       - KHEOPS_LOGSTASH_URL=10.5.7.13:5044
@@ -100,7 +100,7 @@ services:
 
   kheops-zipper:
     container_name: kheopszipper
-    image: osirixfoundation/kheops-zipper:v0.9.6
+    image: osirixfoundation/kheops-zipper:v1.0.0
     logging:
       driver: json-file
       options:
@@ -114,7 +114,7 @@ services:
 
   kheops-ui:
     container_name: kheopsui
-    image: osirixfoundation/kheops-ui:v0.9.6
+    image: osirixfoundation/kheops-ui:v1.0.0
     logging:
       driver: json-file
       options:
@@ -134,7 +134,7 @@ services:
 
   kheops-dicomweb-proxy:
     container_name: kheopsdicomwebproxy
-    image: osirixfoundation/kheops-dicomweb-proxy:v0.9.6
+    image: osirixfoundation/kheops-dicomweb-proxy:v1.0.0
     logging:
       driver: json-file
       options:
@@ -150,7 +150,7 @@ services:
       - kheops_network
 
   kheops-reverse-proxy:
-    image: osirixfoundation/kheops-reverse-proxy:main-insecure
+    image: osirixfoundation/kheops-reverse-proxy:v1.0.0-insecure
     container_name: kheopsreverseproxy
     environment:
       - *root-url
@@ -179,7 +179,7 @@ services:
   pacs-authorization-proxy:
     container_name: pacsauthorizationproxy
     env_file: docker-compose.env
-    image: osirixfoundation/pacs-authorization-proxy:v0.9.6
+    image: osirixfoundation/pacs-authorization-proxy:v1.0.0
     volumes:
       - logs_pep:/var/log/nginx
     logging:
