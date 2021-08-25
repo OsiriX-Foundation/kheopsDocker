@@ -1,8 +1,8 @@
 version: '3.7'
 
 x-environment:
-  - &oidc-provider KHEOPS_OIDC_PROVIDER=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}
-  - &root-url KHEOPS_ROOT_URL=https://${INSTANCE_NAME:?err}.kheops.online
+  - &oidc-provider KHEOPS_OIDC_PROVIDER=https://login-lavim.unige.ch/auth/realms/lavim_unige
+  - &root-url KHEOPS_ROOT_URL=https://lavim.unige.ch
 
 services:
 
@@ -25,8 +25,8 @@ services:
       - WILDFLY_CHOWN=/opt/wildfly/standalone
       - WILDFLY_WAIT_FOR=ldap:389
       - JAVA_OPTS=-Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
-      - POSTGRES_DB=${INSTANCE_NAME:?err}_pacs
-      - POSTGRES_USER=${INSTANCE_NAME:?err}_pacs
+      - POSTGRES_DB=kheops_pacs
+      - POSTGRES_USER=kheops_pacs
       - POSTGRES_PASSWORD_FILE=/run/secrets/kheops_pacsdb_pass
       - POSTGRES_HOST=10.5.6.2
     secrets:
@@ -39,18 +39,27 @@ services:
 
   kheops-authorization:
     container_name: kheopsauthorization
-    image: osirixfoundation/kheops-authorization:v0.9.4-max10
+    image: osirixfoundation/kheops-authorization:v1.0.2
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
+    volumes:
+      - logs_auth:/usr/local/tomcat/logs
     env_file: docker-compose.env
     environment:
       - *root-url
       - *oidc-provider
-      - KHEOPS_WELCOMEBOT_WEBHOOK
-      - KHEOPS_AUTHDB_USER=${INSTANCE_NAME:?err}_authorization
-      - KHEOPS_AUTHDB_NAME=${INSTANCE_NAME:?err}_authorization
+      - KHEOPS_WELCOMEBOT_WEBHOOK=http://welcomebot:8080
+      - KHEOPS_AUTHDB_USER=kheops_authorization
+      - KHEOPS_AUTHDB_NAME=kheops_authorization
       - KHEOPS_AUTHDB_URL=postgresql://10.5.6.2:5432
-      - KHEOPS_AUTHORIZATION_ENABLE_ELASTIC=true
-      - KHEOPS_AUTHORIZATION_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
-      - KHEOPS_AUTHORIZATION_LOGSTASH_URL=kibana.kheops.online:5044
+      - CATALINA_OPTS="-Duser.timezone=UTC"
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8089 -Xms8192m -Xmx16384m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m
+#      - JAVA_OPTS=-Xms64m -Xmx1024m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m 
+    ports:
+      - "8089:8089"
     secrets:
       - kheops_auth_hmasecret
       - kheops_authdb_pass
@@ -58,14 +67,46 @@ services:
       - kheops_client_zippersecret
     networks:
       - kheops_network
+      - kheops_beat_network
     extra_hosts:
-      - "keycloak.kheops.online:10.5.5.29"
-      - "kibana.kheops.online:10.5.7.8"
-      - "reportprovider.kheops.online:10.5.5.33"
+      - "login-lavim.unige.ch:10.5.7.29"
+      - "reportprovider.kheops.online:10.5.7.33"
+
+  kheops-authorization-metricbeat:
+    container_name: kheopsauthorizationmetricbeat
+    image: osirixfoundation/kheops-authorization-metricbeat:v1.0.2
+    env_file: docker-compose.env
+    environment:
+      - KHEOPS_INSTANCES=${INSTANCE_NAME:?err}
+      - KHEOPS_LOGSTASH_URL=10.5.7.13:5044
+    depends_on:
+      - kheops-authorization
+    networks:
+      - kheops_beat_network
+      
+  kheops-filebeat-sidecar:
+    container_name: kheopsfilebeatsidecar
+    image: osirixfoundation/kheops-filebeat-sidecar:v1.0.2
+    environment:
+      - KHEOPS_INSTANCES=${INSTANCE_NAME:?err}
+      - KHEOPS_LOGSTASH_URL=10.5.7.13:5044
+    env_file: docker-compose.env
+    volumes:
+      - logs_auth:/kheops/authorization/logs
+      - logs_pep:/kheops/pep/logs
+      - logs_reverse_proxy:/kheops/reverseproxy/logs
+      - filebeat_registry:/registry
+    networks:
+      - kheops_beat_network
 
   kheops-zipper:
     container_name: kheopszipper
-    image: osirixfoundation/kheops-zipper:v0.9.4
+    image: osirixfoundation/kheops-zipper:v1.0.2
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
     env_file: docker-compose.env
     secrets:
       - kheops_client_zippersecret
@@ -74,23 +115,32 @@ services:
 
   kheops-ui:
     container_name: kheopsui
-    image: osirixfoundation/kheops-ui:v0.9.4
+    image: osirixfoundation/kheops-ui:v1.0.2
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
     env_file: docker-compose.env
     environment:
       - *root-url
       - *oidc-provider
       - KHEOPS_UI_TITLE=Kheops
       - KHEOPS_UI_CLIENTID=loginConnect
-      - KHEOPS_UI_USER_MANAGEMENT_URL=https://keycloak.kheops.online/auth/realms/${INSTANCE_NAME:?err}/account
+      - KHEOPS_UI_USER_MANAGEMENT_URL=https://login-lavim.unige.ch/auth/realms/lavim_unige/account
       - KHEOPS_VIEWER_URL=https://ohif.kheops.online
       - KHEOPS_VIEWER_SM_URL=https://reportprovider.kheops.online/wsi-viewer
-      - KHEOPS_UI_ENABLE_ELASTIC=false
     networks:
       - frontend_network
 
   kheops-dicomweb-proxy:
     container_name: kheopsdicomwebproxy
-    image: osirixfoundation/kheops-dicomweb-proxy:v0.9.4
+    image: osirixfoundation/kheops-dicomweb-proxy:v1.0.2
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
     env_file: docker-compose.env
     environment:
       - *root-url
@@ -99,21 +149,22 @@ services:
       - kheops_client_dicomwebproxysecret
     networks:
       - kheops_network
-    extra_hosts:
-      - "kibana.kheops.online:10.5.7.8"
 
   kheops-reverse-proxy:
-    image: osirixfoundation/kheops-reverse-proxy:v0.9.4-letsencrypt
+    image: osirixfoundation/kheops-reverse-proxy:v1.0.2-letsencrypt
     container_name: kheopsreverseproxy
     environment:
       - *root-url
       - *oidc-provider
-      - KHEOPS_REVERSE_PROXY_ENABLE_ELASTIC=true
-      - KHEOPS_REVERSE_PROXY_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
-      - KHEOPS_REVERSE_PROXY_LOGSTASH_URL=kibana.kheops.online:5044
     env_file: docker-compose.env
     volumes:
       - letsencrypt:/etc/letsencrypt
+      - logs_reverse_proxy:/var/log/nginx
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
     ports:
       - "80:80"
       - "443:443"
@@ -125,19 +176,32 @@ services:
     networks:
       - kheops_network
       - frontend_network
-      - reverseproxy_network
+      - kheops_reverseproxy_network
     extra_hosts:
-      - "${INSTANCE_NAME:?err}.kheops.online:127.0.0.1"
-      - "kibana.kheops.online:10.5.7.8"
+      - "lavim.unige.ch:127.0.0.1"
+
+  welcomebot:
+    container_name: welcomebot
+    env_file: docker-compose.env
+    image: osirixfoundation/kheops-welcome-bot:lavim
+    environment:
+      - STUDENT_SHARING_ALBUM_ID=y7wTTbODmM
+    secrets:
+      - welcomebot_token
+    networks:
+      - kheops_network
 
   pacs-authorization-proxy:
     container_name: pacsauthorizationproxy
-    environment:
-      - KHEOPS_PEP_ENABLE_ELASTIC=true
-      - KHEOPS_PEP_ELASTIC_INSTANCE=${INSTANCE_NAME:?err}
-      - KHEOPS_PEP_LOGSTASH_URL=kibana.kheops.online:5044
     env_file: docker-compose.env
-    image: osirixfoundation/pacs-authorization-proxy:v0.9.4
+    image: osirixfoundation/pacs-authorization-proxy:v1.0.2
+    volumes:
+      - logs_pep:/var/log/nginx
+    logging:
+      driver: json-file
+      options:
+        max-file: "10"
+        max-size: "10m"
     depends_on:
       - arc
     secrets:
@@ -146,8 +210,6 @@ services:
     networks:
       - kheops_network
       - pacs_network
-    extra_hosts:
-      - "kibana.kheops.online:10.5.7.8"
 
 secrets:
   kheops_authdb_pass:
@@ -162,13 +224,18 @@ secrets:
     file: secrets/kheops_client_dicomwebproxysecret
   kheops_client_zippersecret:
     file: secrets/kheops_client_zippersecret
+  welcomebot_token:
+    file: secrets/welcomebot_token
 
 volumes:
   dcm4chee-ldap-ldap:
   dcm4chee-ldap-slapdd:
   dcm4chee-arc-standalone:
   letsencrypt:
-
+  logs_pep:
+  logs_reverse_proxy:
+  logs_auth:
+  filebeat_registry:
 
 networks:
   kheops_network:
@@ -189,10 +256,15 @@ networks:
       driver: default
       config:
         - subnet: "172.16.102.0/24"
-  reverseproxy_network:
+  kheops_beat_network:
     driver: bridge
     ipam:
       driver: default
       config:
         - subnet: "172.16.103.0/24"
-
+  kheops_reverseproxy_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.104.0/24"
