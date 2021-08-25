@@ -56,6 +56,10 @@ services:
       - KHEOPS_AUTHDB_NAME=kheops_authorization
       - KHEOPS_AUTHDB_URL=postgresql://10.5.6.2:5432
       - CATALINA_OPTS="-Duser.timezone=UTC"
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8089 -Xms8192m -Xmx16384m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m
+#      - JAVA_OPTS=-Xms64m -Xmx1024m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m 
+    ports:
+      - "8089:8089"
     secrets:
       - kheops_auth_hmasecret
       - kheops_authdb_pass
@@ -87,15 +91,11 @@ services:
       - KHEOPS_INSTANCES=${INSTANCE_NAME:?err}
       - KHEOPS_LOGSTASH_URL=10.5.7.13:5044
     env_file: docker-compose.env
-    depends_on:
-      - kheops-authorization
-      - kheops-reverse-proxy
-      - pacs-authorization-proxy
     volumes:
       - logs_auth:/kheops/authorization/logs
       - logs_pep:/kheops/pep/logs
       - logs_reverse_proxy:/kheops/reverseproxy/logs
-       - filebeat_registry:/registry
+      - filebeat_registry:/registry
     networks:
       - kheops_beat_network
 
