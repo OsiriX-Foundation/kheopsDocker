@@ -82,23 +82,23 @@ services:
     networks:
       - kheops_beat_network
       
-  kheops-filebeat-sidecar:
-    container_name: kheopsfilebeatsidecar
-    image: osirixfoundation/kheops-filebeat-sidecar:v1.0.4
-    environment:
-      - KHEOPS_INSTANCES=${INSTANCE_NAME:?err}
-      - KHEOPS_LOGSTASH_URL=10.5.7.13:5044
-    env_file: docker-compose.env
-    depends_on:
-      - kheops-authorization
-      - kheops-reverse-proxy
-      - pacs-authorization-proxy
-    volumes:
-      - logs_auth:/kheops/authorization/logs
-      - logs_pep:/kheops/pep/logs
-      - logs_reverse_proxy:/kheops/reverseproxy/logs
-    networks:
-      - kheops_beat_network
+#  kheops-filebeat-sidecar:
+#    container_name: kheopsfilebeatsidecar
+#    image: osirixfoundation/kheops-filebeat-sidecar:v1.0.4
+#    environment:
+#      - KHEOPS_INSTANCES=${INSTANCE_NAME:?err}
+#      - KHEOPS_LOGSTASH_URL=10.5.7.13:5044
+#    env_file: docker-compose.env
+#    depends_on:
+#      - kheops-authorization
+#      - kheops-reverse-proxy
+#      - pacs-authorization-proxy
+#    volumes:
+#      - logs_auth:/kheops/authorization/logs
+#      - logs_pep:/kheops/pep/logs
+#      - logs_reverse_proxy:/kheops/reverseproxy/logs
+#    networks:
+#      - kheops_beat_network
 
   kheops-zipper:
     container_name: kheopszipper
