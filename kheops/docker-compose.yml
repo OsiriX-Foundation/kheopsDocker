@@ -87,6 +87,7 @@ services:
       - kheops_authdb_pass
       - kheops_client_dicomwebproxysecret
       - kheops_client_zippersecret
+      - kheops_auth_admin_password
     extra_hosts:
       - "keycloak.kheops.online:10.5.7.29"
       - "reportprovider.kheops.online:10.5.7.30"
@@ -247,6 +248,8 @@ secrets:
     file: ${SECRETS_PATH}/kheops_client_zippersecret
   welcomebot_token:
     file: ${SECRETS_PATH}/welcomebot_token
+  kheops_auth_admin_password:
+    file: ${SECRETS_PATH}/kheops_auth_admin_password
 
 volumes:
   dcm4chee-arc-data:
