@@ -2,18 +2,33 @@ version: '3.1'
 services:
   ohif:
     container_name: ohif
-    image: osirixfoundation/viewer:latest
+    image: osirixfoundation/viewer:v4.12.6
     restart: on-failure
+#    ports:
+#      - "8081:80"
+#      - "443:443"
+#    secrets:
+#      - privkey1.pem
+#      - fullchain1.pem
+#    networks:
+#     - main_reverse_proxy_ohif_network
     environment:
-      - SERVER_NAME=ohif.kheops.online
-    ports:
-      - "80:80"
-      - "443:443"
-    secrets:
-      - privkey1.pem
-      - fullchain1.pem
-secrets:
-  privkey1.pem:
-    file: secrets/privkey1.pem
-  fullchain1.pem:
-    file: secrets/fullchain1.pem
+      - SERVER_NAME=_
+
+#secrets:
+#  privkey1.pem:
+#    file: secrets/privkey1.pem
+#  fullchain1.pem:
+#    file: secrets/fullchain1.pem
+
+networks:
+  default:
+    external:
+      name: main_reverse_proxy_ohif_network
+#  ohif:
+#    driver: bridge
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: "172.16.244.0/24"
+
